@@ -24,52 +24,92 @@
 
 ## Sumário
 
-1. [Identidade do Projeto](#1-identidade-do-projeto)
-2. [Objetivo Educacional](#2-objetivo-educacional)
-3. [Público-Alvo](#3-público-alvo)
-4. [Plataforma e Tecnologias](#4-plataforma-e-tecnologias)
-5. [Escopo do MVP](#5-escopo-do-mvp)
-6. [Gameplay](#6-gameplay)
-7. [Mecânica de Tempo](#7-mecânica-de-tempo)
-8. [Sistema de Perguntas](#8-sistema-de-perguntas)
-9. [Sistema de Dificuldade](#9-sistema-de-dificuldade) \
-    9.1. [Progressão de Velocidade](#91-progressão-de-velocidade) \
-    9.2. [Relação entre Velocidade e Tempo de Resposta](#92-relação-entre-velocidade-e-tempo-de-resposta) \
-    9.3. [Curva de Dificuldade](#93-curva-de-dificuldade) \
-    9.4. [Configurações Centralizadas](#94-configurações-centralizadas)
-10. [Sistema de Pontuação](#10-sistema-de-pontuação)
-11. [Vida e Game Over](#11-vida-e-game-over)
-12. [Personagem](#12-personagem)
-13. [Obstáculo](#13-obstáculo)
-14. [Cenário](#14-cenário)
-15. [Quantidade de Modelos 3D](#15-quantidade-de-modelos-3d)
-16. [Polígonos](#16-polígonos)
-17. [Estilo Visual](#17-estilo-visual)
-18. [Câmera](#18-câmera)
-19. [Controles](#19-controles)
-20. [Interface](#20-interface)
-21. [Áudio](#21-áudio)
-22. [Arquitetura Godot](#22-arquitetura-godot)
-23. [Sistemas Principais](#23-sistemas-principais)
-24. [Geração Infinita](#24-geração-infinita)
-25. [Performance](#25-performance)
-26. [Fluxo do Jogo](#26-fluxo-do-jogo)
-27. [Regras de Geração de Obstáculos](#27-regras-de-geração-de-obstáculos)
-28. [Regras de Fair Play](#28-regras-de-fair-play)
-29. [Computação Gráfica](#29-computação-gráfica)
-30. [Blender](#30-blender)
-31. [Organização de Equipe](#31-organização-de-equipe)
-32. [Cronograma](#32-cronograma)
-33. [Backlog](#33-backlog)
-34. [Testes](#34-testes)
-35. [Critérios de Aceitação](#35-critérios-de-aceitação)
-36. [Riscos](#36-riscos)
-37. [Funcionalidades Futuras](#37-funcionalidades-futuras)
-38. [Escopo Final Recomendado](#38-escopo-final-recomendado)
-39. [Documentação Visual](#39-documentação-visual)
-40. [Formatação do Documento](#40-formatação-do-documento)
-41. [Controle de Escopo](#41-controle-de-escopo)
-42. [Conclusão](#42-conclusão)
+- [🦖 DinoMath Run](#-dinomath-run)
+  - [Game Design Document](#game-design-document)
+  - [Controle de Versão](#controle-de-versão)
+  - [Sumário](#sumário)
+  - [1. Identidade do Projeto](#1-identidade-do-projeto)
+    - [Conceito central](#conceito-central)
+    - [Pilares de design](#pilares-de-design)
+  - [2. Objetivo Educacional](#2-objetivo-educacional)
+  - [3. Público-Alvo](#3-público-alvo)
+  - [4. Plataforma e Tecnologias](#4-plataforma-e-tecnologias)
+    - [Stack recomendada](#stack-recomendada)
+    - [Por que Godot em vez de Unity ou Unreal](#por-que-godot-em-vez-de-unity-ou-unreal)
+    - [Pipeline de produção](#pipeline-de-produção)
+    - [Especificações técnicas](#especificações-técnicas)
+  - [5. Escopo do MVP](#5-escopo-do-mvp)
+    - [Obrigatório no MVP](#obrigatório-no-mvp)
+    - [Fora do escopo do MVP](#fora-do-escopo-do-mvp)
+  - [6. Gameplay](#6-gameplay)
+    - [Loop principal](#loop-principal)
+  - [7. Mecânica de Tempo](#7-mecânica-de-tempo)
+    - [Abordagem recomendada (simples e segura)](#abordagem-recomendada-simples-e-segura)
+    - [Alternativa mais simples ainda](#alternativa-mais-simples-ainda)
+    - [Riscos da abordagem por escala de tempo global (`Engine.time_scale`)](#riscos-da-abordagem-por-escala-de-tempo-global-enginetime_scale)
+  - [8. Sistema de Perguntas](#8-sistema-de-perguntas)
+    - [Regras gerais de geração](#regras-gerais-de-geração)
+    - [Tipos de questão suportados](#tipos-de-questão-suportados)
+    - [Pseudocódigo de geração](#pseudocódigo-de-geração)
+    - [Geração de alternativas (múltipla escolha)](#geração-de-alternativas-múltipla-escolha)
+  - [9. Sistema de Dificuldade](#9-sistema-de-dificuldade)
+    - [Variáveis que podem aumentar com a dificuldade](#variáveis-que-podem-aumentar-com-a-dificuldade)
+    - [9.1. Progressão de Velocidade](#91-progressão-de-velocidade)
+    - [9.2. Relação entre Velocidade e Tempo de Resposta](#92-relação-entre-velocidade-e-tempo-de-resposta)
+    - [9.3. Curva de Dificuldade](#93-curva-de-dificuldade)
+    - [9.4. Configurações Centralizadas](#94-configurações-centralizadas)
+  - [10. Sistema de Pontuação](#10-sistema-de-pontuação)
+    - [Combo (recurso secundário, opcional)](#combo-recurso-secundário-opcional)
+  - [11. Vida e Game Over](#11-vida-e-game-over)
+    - [Justificativa](#justificativa)
+  - [12. Personagem](#12-personagem)
+  - [13. Obstáculo](#13-obstáculo)
+  - [14. Cenário](#14-cenário)
+  - [15. Quantidade de Modelos 3D](#15-quantidade-de-modelos-3d)
+    - [Modelos obrigatórios](#modelos-obrigatórios)
+    - [Reuso de assets](#reuso-de-assets)
+  - [16. Polígonos](#16-polígonos)
+  - [17. Estilo Visual](#17-estilo-visual)
+  - [18. Câmera](#18-câmera)
+    - [Justificativa](#justificativa-1)
+  - [19. Controles](#19-controles)
+    - [Múltipla escolha vs. digitação da resposta](#múltipla-escolha-vs-digitação-da-resposta)
+  - [20. Interface](#20-interface)
+    - [HUD (durante a partida)](#hud-durante-a-partida)
+    - [Menu principal](#menu-principal)
+    - [Tela de jogo](#tela-de-jogo)
+    - [Tela de Game Over](#tela-de-game-over)
+  - [21. Áudio](#21-áudio)
+  - [22. Arquitetura Godot](#22-arquitetura-godot)
+  - [23. Sistemas Principais](#23-sistemas-principais)
+  - [24. Geração Infinita](#24-geração-infinita)
+    - [Geração de obstáculos](#geração-de-obstáculos)
+  - [25. Performance](#25-performance)
+  - [26. Fluxo do Jogo](#26-fluxo-do-jogo)
+    - [Fluxo de dificuldade (paralelo ao fluxo principal)](#fluxo-de-dificuldade-paralelo-ao-fluxo-principal)
+  - [27. Regras de Geração de Obstáculos](#27-regras-de-geração-de-obstáculos)
+  - [28. Regras de Fair Play](#28-regras-de-fair-play)
+  - [29. Computação Gráfica](#29-computação-gráfica)
+  - [30. Blender](#30-blender)
+    - [Pipeline recomendado](#pipeline-recomendado)
+    - [Boas práticas](#boas-práticas)
+  - [31. Organização de Equipe](#31-organização-de-equipe)
+  - [32. Cronograma](#32-cronograma)
+  - [33. Backlog](#33-backlog)
+    - [Must Have](#must-have)
+    - [Should Have](#should-have)
+    - [Could Have](#could-have)
+    - [Won't Have (neste projeto)](#wont-have-neste-projeto)
+  - [34. Testes](#34-testes)
+    - [Casos de teste básicos (exemplos)](#casos-de-teste-básicos-exemplos)
+  - [35. Critérios de Aceitação](#35-critérios-de-aceitação)
+  - [36. Riscos](#36-riscos)
+  - [37. Funcionalidades Futuras](#37-funcionalidades-futuras)
+  - [38. Escopo Final Recomendado](#38-escopo-final-recomendado)
+  - [39. Documentação Visual](#39-documentação-visual)
+  - [40. Formatação do Documento](#40-formatação-do-documento)
+  - [41. Controle de Escopo](#41-controle-de-escopo)
+  - [42. Conclusão](#42-conclusão)
 
 ---
 
@@ -738,8 +778,34 @@ Música de fundo é **opcional** e pode ser um loop curto e discreto. O áudio n
 
 ## 22. Arquitetura Godot
 
+O repositório está organizado como um *monorepo*: o projeto Godot fica em `game/`, os arquivos-fonte de modelagem em `blender/`, a documentação em `docs/` e os scripts de automação de desenvolvimento em `scripts/`.
+
 ```
-project/
+DinoMath-Run/
+├── game/                # Projeto Godot 4.x (raiz do projeto)
+│   ├── project.godot    # Configuração do projeto (nome, renderer, física)
+│   ├── icon.svg         # Ícone do projeto
+│   ├── scenes/          # Cenas (.tscn) — menu, jogo, player, obstáculo, UI
+│   ├── scripts/         # Scripts GDScript (.gd) — sistemas principais (Seção 23)
+│   ├── assets/          # Assets importados no Godot (GLB/GLTF, texturas, materiais, áudio)
+│   └── .godot/          # Cache do editor/importação — gerado, fora do controle de versão
+│
+├── blender/             # Arquivos-fonte de modelagem 3D (.blend)
+│   ├── dinosaur/        # Personagem (modelo + rig + animações)
+│   ├── environment/     # Cenário de deserto, pedras e decorativos
+│   └── obstacles/       # Obstáculos (cacto e variações)
+│
+├── docs/                # Documentação (DinoMath_GDD.md)
+├── scripts/             # Automação de desenvolvimento (ex.: carga de variáveis de ambiente)
+├── .devcontainer/       # Ambiente de desenvolvimento containerizado
+├── makefile             # Comandos de conveniência (make run, make import)
+└── opencode.json        # Configuração da ferramenta de IA do projeto
+```
+
+Dentro de `game/`, a estrutura planejada de cenas, scripts e assets é:
+
+```
+game/
 ├── scenes/
 │   ├── main_menu.tscn
 │   ├── game.tscn
@@ -757,7 +823,7 @@ project/
 │   └── ui_manager.gd
 │
 └── assets/
-    ├── models/
+    ├── models/          # GLB/GLTF exportados do Blender
     ├── textures/
     ├── materials/
     └── audio/
@@ -963,7 +1029,7 @@ Considerando uma equipe de **3 pessoas**:
 
 **Responsabilidades compartilhadas por todos:** testes, documentação e preparação da apresentação final.
 
-A divisão busca minimizar dependências bloqueantes entre os integrantes — por exemplo, o William pode desenvolver a lógica de gameplay usando modelos provisórios (placeholders) enquanto o Marcos finaliza os assets definitivos.
+A divisão busca minimizar dependências bloqueantes entre os integrantes — por exemplo, o [Kelvin Oliveira](https://github.com/kelvin-oliveira-dev) pode desenvolver a lógica de gameplay usando modelos provisórios (placeholders) enquanto o [Marcos Henrique](https://github.com/marcos-henri) finaliza os assets definitivos e [William Araújo](https://github.com/WilliamOut) implementa o UI/UX do menu.
 
 ---
 
