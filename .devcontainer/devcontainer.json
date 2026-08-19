@@ -1,0 +1,45 @@
+{
+  "name": "DinoMath Run",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "vscode",
+  "postCreateCommand": "cd \"${containerWorkspaceFolder}/game\" && godot --headless --import",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "geequlim.godot-tools",
+        "DoHe.godot-format",
+        "alfish.godot-files",
+        "arkii.godot-shaders",
+        "razoric.gdscript-snippets",
+        "cesium.gltf-vscode",
+        "editorconfig.editorconfig",
+        "eamodio.gitlens",
+        "wayou.vscode-todo-highlight",
+        "usernamehw.errorlens",
+        "yzhang.markdown-all-in-one",
+        "tal7aouy.rainbow-bracket",
+        "oderwat.indent-rainbow"
+      ],
+      "settings": {
+        "godotTools.editorPath.godot4": "/opt/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "godotTools.lsp.headless": true,
+        "files.associations": {
+          "*.gd": "gdscript",
+          "*.tres": "godot-resource",
+          "*.tscn": "godot-scene",
+          "*.godot": "godot-project",
+          "*.gdshader": "godot-shader"
+        },
+        "godotFormatter.enable": true,
+        "godotFormatter.enableLinter": true,
+        "[gdscript]": {
+          "editor.defaultFormatter": "DoHe.godot-format",
+          "editor.formatOnSave": true
+        },
+        "files.eol": "\n"
+      }
+    }
+  }
+}

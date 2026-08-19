@@ -1,24 +1,10 @@
-# Godot 4+ specific ignores
-.godot/
-.nomedia
+# Visual Studio Code settings
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
 
-# Godot-specific ignores
-.import/
-*.tmp
-export.cfg
-export_credentials.cfg
-
-# Godot 4.2+ native extension copies (Windows)
-~*.dll
-
-# Imported translations (automatically generated from CSV files)
-*.translation
-
-# Mono/C# specific ignores (only if using the .NET version)
-.mono/
-data_*/
-mono_crash.*.json
-
-# OS-specific overrides (Optional but highly recommended)
-.DS_Store
-Thumbs.db
+# Built Visual Studio Code Extensions
+*.vsix

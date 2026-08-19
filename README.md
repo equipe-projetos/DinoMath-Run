@@ -38,6 +38,8 @@ O objetivo é sobreviver o máximo de tempo possível acumulando a maior pontua�
 
 O design completo do jogo está descrito no [Game Design Document](docs/DinoMath_GDD.md).
 
+Os arquivos-fonte de modelagem 3D estão organizados em [blender/](blender/README.md).
+
 ## 🚀 Como rodar
 
 1. Instale o [Godot 4.x](https://godotengine.org/download).
