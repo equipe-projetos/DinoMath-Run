@@ -1,0 +1,53 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "github": {
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+      },
+      "timeout": 15000
+    }
+  },
+  "permission": {
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow"
+    },
+    "edit": {
+      "*": "allow",
+      ".env": "ask",
+      ".env.*": "ask",
+      ".env.example": "allow"
+    },
+    "bash": {
+      "*": "ask",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git branch*": "allow",
+      "git add*": "allow",
+      "git commit*": "ask",
+      "git push*": "deny",
+      "godot*": "allow",
+      "rm -rf*": "deny"
+    },
+    "glob": "allow",
+    "grep": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "question": "allow",
+    "skill": "allow",
+    "external_directory": "ask",
+    "doom_loop": "ask"
+  },
+  "instructions": [
+    "README.md"
+  ],
+  "lsp": false
+}

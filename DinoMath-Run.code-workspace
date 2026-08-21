@@ -1,0 +1,39 @@
+{
+"folders": [
+    {
+      "name": "Root",
+      "path": "."
+    },
+    {
+      "name": "Game (Godot)",
+      "path": "game"
+    },
+    {
+      "name": "Blender",
+      "path": "blender"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "files.exclude": {
+      "**/game": true,
+      "**/blender": true,
+    },
+    "godotTools.editorPath.godot4": "godot",
+    "godotTools.lsp.headless": true,
+    "files.associations": {
+      "*.gd": "gdscript",
+      "*.tres": "godot-resource",
+      "*.tscn": "godot-scene",
+      "*.godot": "godot-project",
+      "*.gdshader": "godot-shader"
+    },
+    "godotFormatter.enable": true,
+    "godotFormatter.enableLinter": true,
+    "[gdscript]": {
+      "editor.defaultFormatter": "DoHe.godot-format",
+      "editor.formatOnSave": true
+    },
+    "files.eol": "\n"
+  }
+}
