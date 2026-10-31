@@ -32,6 +32,7 @@ var is_active: bool = true
 @onready var _cactus: Node3D = $Cactus
 
 var _camera: Camera3D
+var _game_manager: GameManager
 var _variations: Array[Node3D] = []
 var _base_collision_layer: int
 var _base_collision_mask: int
@@ -41,6 +42,7 @@ func _ready() -> void:
 	_base_collision_layer = collision_layer
 	_base_collision_mask = collision_mask
 	_camera = get_viewport().get_camera_3d()
+	_game_manager = get_node_or_null("/root/GameManager") as GameManager
 	add_to_group("obstacle")
 	_setup_hit_area()
 	_cache_variations()
@@ -56,20 +58,34 @@ func _setup_hit_area() -> void:
 	shape.shape.radius = hit_radius
 	_hit_area.add_child(shape)
 	_hit_area.position = Vector3(0, 0.5, 0)
+	_hit_area.monitoring = false
 	add_child(_hit_area)
 	_hit_area.body_entered.connect(_on_hit_area_body_entered)
 
 
 func _on_hit_area_body_entered(body: Node) -> void:
-	if body.is_in_group("player"):
-		hit_player.emit(body)
+	if not body.is_in_group("player"):
+		return
+
+	hit_player.emit(body)
+
+	if not body.has_method("handle_obstacle_collision"):
+		return
+
+	var did_hit: Variant = body.call("handle_obstacle_collision")
+	if did_hit is bool and did_hit:
+		despawn()
 
 
 func _physics_process(delta: float) -> void:
 	if not is_active:
 		return
 
-	global_position += move_direction.normalized() * move_speed * delta
+	var speed_scale: float = 1.0
+	if is_instance_valid(_game_manager):
+		speed_scale = _game_manager.world_speed_scale
+
+	global_position += move_direction.normalized() * move_speed * speed_scale * delta
 
 	if _is_out_of_view():
 		despawn()
@@ -149,6 +165,9 @@ func _apply_active_state(active: bool) -> void:
 	set_physics_process(active)
 	collision_layer = _base_collision_layer if active else 0
 	collision_mask = _base_collision_mask if active else 0
+
+	if is_instance_valid(_hit_area):
+		_hit_area.set_deferred("monitoring", active)
 
 	if active:
 		if not is_in_group("obstacles"):
