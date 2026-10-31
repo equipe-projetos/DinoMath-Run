@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhpjy3m21mdh7"]
+
+[ext_resource type="PackedScene" uid="uid://vmvqbkn6lawr" path="res://assets/models/ground.glb" id="1_ground"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(12.0364, 0.686, 12.033)
+
+[node name="GroundSegment" type="StaticBody3D" groups=["ground_segments"]]
+
+[node name="Ground" parent="." instance=ExtResource("1_ground")]
+position = Vector3(0, 0.24838, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0041, 0.157, 0.0041)
+shape = SubResource("BoxShape3D_ground")
