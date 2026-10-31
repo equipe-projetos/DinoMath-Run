@@ -1,0 +1,563 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/how_to_play.gd" id="1_howtoplay"]
+
+[sub_resource type="Gradient" id="Gradient_sky"]
+offsets = PackedFloat32Array(0, 0.42, 0.68, 1)
+colors = PackedColorArray(0.07, 0.035, 0.11, 1, 0.22, 0.09, 0.12, 1, 0.58, 0.24, 0.12, 1, 0.12, 0.07, 0.04, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sky"]
+gradient = SubResource("Gradient_sky")
+width = 1280
+height = 720
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sun"]
+bg_color = Color(1, 0.63, 0.28, 0.18)
+corner_radius_top_left = 180
+corner_radius_top_right = 180
+corner_radius_bottom_right = 180
+corner_radius_bottom_left = 180
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 28.0
+content_margin_top = 20.0
+content_margin_right = 28.0
+content_margin_bottom = 20.0
+bg_color = Color(0.09, 0.055, 0.035, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.91, 0.55, 0.22, 0.35)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 18
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip"]
+content_margin_left = 18.0
+content_margin_top = 14.0
+content_margin_right = 18.0
+content_margin_bottom = 14.0
+bg_color = Color(0.18, 0.11, 0.06, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.69, 0.35, 0.45)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_keycap"]
+content_margin_left = 14.0
+content_margin_top = 5.0
+content_margin_right = 14.0
+content_margin_bottom = 5.0
+bg_color = Color(0.23, 0.14, 0.08, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 3
+border_color = Color(0.85, 0.55, 0.28, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary_normal"]
+content_margin_left = 30.0
+content_margin_top = 14.0
+content_margin_right = 30.0
+content_margin_bottom = 14.0
+bg_color = Color(0.78, 0.33, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.61, 0.28, 0.55)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.28)
+shadow_size = 6
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary_hover"]
+content_margin_left = 30.0
+content_margin_top = 14.0
+content_margin_right = 30.0
+content_margin_bottom = 14.0
+bg_color = Color(0.88, 0.42, 0.19, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.73, 0.38, 0.75)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.32)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary_pressed"]
+content_margin_left = 30.0
+content_margin_top = 14.0
+content_margin_right = 30.0
+content_margin_bottom = 14.0
+bg_color = Color(0.61, 0.24, 0.1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.86, 0.48, 0.2, 0.55)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary_focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.82, 0.45, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_separator"]
+color = Color(0.91, 0.55, 0.22, 0.28)
+thickness = 1
+
+[node name="HowToPlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_howtoplay")
+
+[node name="Sky" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_sky")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Scenery" type="Node2D" parent="."]
+
+[node name="DuneBack" type="Polygon2D" parent="Scenery"]
+polygon = PackedVector2Array(-600, 720, -600, 600, 40, 540, 330, 590, 650, 520, 1000, 585, 1250, 535, 2000, 600, 2000, 720)
+color = Color(0.33, 0.17, 0.09, 1)
+
+[node name="DuneFront" type="Polygon2D" parent="Scenery"]
+polygon = PackedVector2Array(-600, 720, -600, 675, 150, 640, 440, 690, 760, 625, 1080, 685, 1340, 645, 2000, 680, 2000, 720)
+color = Color(0.2, 0.1, 0.055, 1)
+
+[node name="CactusLeft" type="Polygon2D" parent="Scenery"]
+position = Vector2(80, 400)
+scale = Vector2(0.85, 0.85)
+color = Color(0.14, 0.23, 0.12, 0.9)
+polygon = PackedVector2Array(0, 240, 0, 120, -38, 120, -38, 50, -16, 50, -16, 98, 16, 98, 16, 0, 44, 0, 44, 160, 82, 160, 82, 90, 104, 90, 104, 190, 66, 190, 66, 210, 44, 210, 44, 240)
+
+[node name="CactusRight" type="Polygon2D" parent="Scenery"]
+position = Vector2(1100, 450)
+scale = Vector2(0.7, 0.7)
+color = Color(0.14, 0.23, 0.12, 0.75)
+polygon = PackedVector2Array(0, 240, 0, 120, -38, 120, -38, 50, -16, 50, -16, 98, 16, 98, 16, 0, 44, 0, 44, 160, 82, 160, 82, 90, 104, 90, 104, 190, 66, 190, 66, 210, 44, 210, 44, 240)
+
+[node name="Sun" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 0.9
+anchor_top = 0.14
+anchor_right = 0.9
+anchor_bottom = 0.14
+offset_left = -170.0
+offset_top = -170.0
+offset_right = 170.0
+offset_bottom = 170.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sun")
+
+[node name="Layout" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 56.0
+offset_top = 24.0
+offset_right = -56.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Layout/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.58, 0.22, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.08, 0.04, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.45)
+theme_override_constants/outline_size = 9
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 50
+text = "Como Jogar"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Layout/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.81, 0.68, 0.9)
+theme_override_font_sizes/font_size = 18
+text = "Guia rápido para sobreviver ao deserto"
+horizontal_alignment = 1
+
+[node name="Columns" type="HBoxContainer" parent="Layout/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="ControlsPanel" type="PanelContainer" parent="Layout/Content/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="ControlsContent" type="VBoxContainer" parent="Layout/Content/Columns/ControlsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ControlsTitle" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.6, 0.26, 1)
+theme_override_font_sizes/font_size = 26
+text = "Controles"
+
+[node name="ControlsSeparator" type="HSeparator" parent="Layout/Content/Columns/ControlsPanel/ControlsContent"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_separator")
+
+[node name="ControlsGrid" type="GridContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent"]
+layout_mode = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 12
+columns = 2
+
+[node name="KeysChoice" type="HBoxContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="KeySetas" type="PanelContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysChoice"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_keycap")
+
+[node name="Label" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysChoice/KeySetas"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.89, 0.72, 1)
+theme_override_font_sizes/font_size = 17
+text = "SETAS"
+horizontal_alignment = 1
+
+[node name="KeyA" type="PanelContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysChoice"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_keycap")
+
+[node name="Label" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysChoice/KeyA"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.89, 0.72, 1)
+theme_override_font_sizes/font_size = 17
+text = "A"
+horizontal_alignment = 1
+
+[node name="KeyD" type="PanelContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysChoice"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_keycap")
+
+[node name="Label" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysChoice/KeyD"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.89, 0.72, 1)
+theme_override_font_sizes/font_size = 17
+text = "D"
+horizontal_alignment = 1
+
+[node name="ChoiceDesc" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.92, 0.86, 0.77, 1)
+theme_override_font_sizes/font_size = 18
+text = "Escolhem a alternativa"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="KeysConfirm" type="HBoxContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="KeyEnter" type="PanelContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysConfirm"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_keycap")
+
+[node name="Label" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysConfirm/KeyEnter"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.89, 0.72, 1)
+theme_override_font_sizes/font_size = 17
+text = "ENTER"
+horizontal_alignment = 1
+
+[node name="ConfirmDesc" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.92, 0.86, 0.77, 1)
+theme_override_font_sizes/font_size = 18
+text = "Confirma a resposta"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="KeysMenu" type="HBoxContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="KeySetas" type="PanelContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysMenu"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_keycap")
+
+[node name="Label" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysMenu/KeySetas"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.89, 0.72, 1)
+theme_override_font_sizes/font_size = 17
+text = "SETAS"
+horizontal_alignment = 1
+
+[node name="KeyEnter" type="PanelContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysMenu"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_keycap")
+
+[node name="Label" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysMenu/KeyEnter"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.89, 0.72, 1)
+theme_override_font_sizes/font_size = 17
+text = "ENTER"
+horizontal_alignment = 1
+
+[node name="MenuDesc" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.92, 0.86, 0.77, 1)
+theme_override_font_sizes/font_size = 18
+text = "Navegam pelos menus"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="KeysBack" type="HBoxContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="KeyEsc" type="PanelContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysBack"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_keycap")
+
+[node name="Label" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysBack/KeyEsc"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.89, 0.72, 1)
+theme_override_font_sizes/font_size = 17
+text = "ESC"
+horizontal_alignment = 1
+
+[node name="BackDesc" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.92, 0.86, 0.77, 1)
+theme_override_font_sizes/font_size = 18
+text = "Volta ao menu"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Spacer" type="Control" parent="Layout/Content/Columns/ControlsPanel/ControlsContent"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ControlsNote" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.6, 0.7)
+theme_override_font_sizes/font_size = 15
+text = "Não é preciso pular: o salto é automático quando a resposta está certa."
+autowrap_mode = 2
+
+[node name="RulesPanel" type="PanelContainer" parent="Layout/Content/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="RulesContent" type="VBoxContainer" parent="Layout/Content/Columns/RulesPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="RulesTitle" type="Label" parent="Layout/Content/Columns/RulesPanel/RulesContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.6, 0.26, 1)
+theme_override_font_sizes/font_size = 26
+text = "Regras"
+
+[node name="RulesSeparator" type="HSeparator" parent="Layout/Content/Columns/RulesPanel/RulesContent"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_separator")
+
+[node name="RuleCorrect" type="HBoxContainer" parent="Layout/Content/Columns/RulesPanel/RulesContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Bar" type="ColorRect" parent="Layout/Content/Columns/RulesPanel/RulesContent/RuleCorrect"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+color = Color(0.56, 0.82, 0.42, 1)
+
+[node name="Text" type="RichTextLabel" parent="Layout/Content/Columns/RulesPanel/RulesContent/RuleCorrect"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.9, 0.84, 0.75, 1)
+theme_override_font_sizes/normal_font_size = 17
+theme_override_font_sizes/bold_font_size = 18
+bbcode_enabled = true
+text = "[b][color=#8FD16A]Acertou[/color][/b]
+O dinossauro salta sozinho, ultrapassa o obstáculo e você ganha pontos."
+fit_content = true
+scroll_active = false
+
+[node name="RuleWrong" type="HBoxContainer" parent="Layout/Content/Columns/RulesPanel/RulesContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Bar" type="ColorRect" parent="Layout/Content/Columns/RulesPanel/RulesContent/RuleWrong"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+color = Color(0.88, 0.38, 0.24, 1)
+
+[node name="Text" type="RichTextLabel" parent="Layout/Content/Columns/RulesPanel/RulesContent/RuleWrong"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.9, 0.84, 0.75, 1)
+theme_override_font_sizes/normal_font_size = 17
+theme_override_font_sizes/bold_font_size = 18
+bbcode_enabled = true
+text = "[b][color=#E0603C]Errou ou o tempo acabou[/color][/b]
+Você perde uma vida e a corrida continua."
+fit_content = true
+scroll_active = false
+
+[node name="RuleLives" type="HBoxContainer" parent="Layout/Content/Columns/RulesPanel/RulesContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Bar" type="ColorRect" parent="Layout/Content/Columns/RulesPanel/RulesContent/RuleLives"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+color = Color(0.94, 0.69, 0.23, 1)
+
+[node name="Text" type="RichTextLabel" parent="Layout/Content/Columns/RulesPanel/RulesContent/RuleLives"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.9, 0.84, 0.75, 1)
+theme_override_font_sizes/normal_font_size = 17
+theme_override_font_sizes/bold_font_size = 18
+bbcode_enabled = true
+text = "[b][color=#F0B03A]3 vidas[/color][/b]
+Quando as três acabarem, é Game Over."
+fit_content = true
+scroll_active = false
+
+[node name="Spacer" type="Control" parent="Layout/Content/Columns/RulesPanel/RulesContent"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Tip" type="PanelContainer" parent="Layout/Content/Columns/RulesPanel/RulesContent"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tip")
+
+[node name="TipText" type="RichTextLabel" parent="Layout/Content/Columns/RulesPanel/RulesContent/Tip"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.9, 0.84, 0.75, 1)
+theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/bold_font_size = 17
+bbcode_enabled = true
+text = "[b][color=#F4C57E]Dica[/color][/b]
+Perto do obstáculo o tempo desacelera (slow motion). Aproveite para ler a conta com calma e confirmar antes do cronômetro zerar."
+fit_content = true
+scroll_active = false
+
+[node name="Footer" type="VBoxContainer" parent="Layout/Content"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BackRow" type="CenterContainer" parent="Layout/Content/Footer"]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="Layout/Content/Footer/BackRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 50)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.87, 0.75, 1)
+theme_override_colors/font_focus_color = Color(1, 0.95, 0.86, 1)
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBoxFlat_primary_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_primary_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_primary_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_primary_focus")
+text = "Voltar"
+
+[node name="FooterHint" type="Label" parent="Layout/Content/Footer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.6, 0.6)
+theme_override_font_sizes/font_size = 15
+text = "Pressione Esc para voltar ao menu"
+horizontal_alignment = 1
+
+[node name="Credit" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -40.0
+offset_right = -24.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.91, 0.55, 0.22, 0.5)
+theme_override_font_sizes/font_size = 14
+text = "Unijorge · Computação Gráfica"
+horizontal_alignment = 2
