@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://donlowiuancd5" path="res://assets/models/T_Rex.glb" id="2_v6fml"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fv16g"]
+size = Vector3(0.63, 1.115, 2.5019531)
 
 [node name="Player" type="CharacterBody3D" unique_id=1965148915]
 script = ExtResource("1_p0vlq")
@@ -11,7 +12,7 @@ script = ExtResource("1_p0vlq")
 [node name="T_Rex" parent="." unique_id=981774964 instance=ExtResource("2_v6fml")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=815925789]
-transform = Transform3D(0.335, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.557, -0.19067383)
 shape = SubResource("BoxShape3D_fv16g")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=493821363]
