@@ -4,6 +4,7 @@ extends CanvasLayer
 @onready var question_manager: QuestionManager = get_node("/root/QuestionManager")
 @onready var score_manager: ScoreManager = get_node("/root/ScoreManager")
 @onready var difficulty: DifficultyManager = get_node("/root/DifficultyManager")
+@onready var game_manager: GameManager = get_node("/root/GameManager") as GameManager
 
 @onready var question_container: Control = $MarginContainer/VBoxContainer/QuestionContainer
 @onready var score_label: Label = $MarginContainer/VBoxContainer/HBoxContainer_Score/ScoreLabel
@@ -18,11 +19,6 @@ extends CanvasLayer
 	$MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer/AltBtn4,
 ]
 
-@export_group("Configuração")
-@export var max_lives: int = 3
-@export var response_time: float = 5.0
-
-var current_lives: int = 3
 var current_alternatives: Array = []
 var current_correct_answer: Variant = 0
 var selected_index: int = 0
@@ -39,17 +35,16 @@ func _ready() -> void:
 	question_manager.answer_timeout.connect(_on_answer_timeout)
 	score_manager.score_changed.connect(_on_score_changed)
 	score_manager.combo_changed.connect(_on_combo_changed)
+	game_manager.lives_changed.connect(_on_lives_changed)
 
 	for i in range(alternative_buttons.size()):
 		alternative_buttons[i].pressed.connect(func(): _on_answer_button_pressed(i))
 
-	current_lives = max_lives
 	_update_hud()
 	_hide_question()
 
 
 func reset() -> void:
-	current_lives = max_lives
 	_update_hud()
 	_hide_question()
 
@@ -73,16 +68,16 @@ func _on_answer_correct(_is_combo: bool, _points: int) -> void:
 
 func _on_answer_wrong() -> void:
 	_timer_node.stop()
-	current_lives -= 1
-	_update_hud()
 	_hide_question()
 
 
 func _on_answer_timeout() -> void:
 	_timer_node.stop()
-	current_lives -= 1
-	_update_hud()
 	_hide_question()
+
+
+func _on_lives_changed(_new_lives: int) -> void:
+	_update_hud()
 
 
 func _on_score_changed(_new_score: int) -> void:
@@ -97,7 +92,7 @@ func _update_hud() -> void:
 	if score_label:
 		score_label.text = "Score: %d" % score_manager.get_score()
 	if lives_label:
-		lives_label.text = "Vidas: %d" % current_lives
+		lives_label.text = "Vidas: %d" % game_manager.lives
 	if combo_label:
 		var combo: int = score_manager.get_combo()
 		combo_label.text = "Combo: x%d" % combo if combo > 1 else "Combo:"
@@ -172,7 +167,7 @@ func _input(event: InputEvent) -> void:
 
 
 func get_lives() -> int:
-	return current_lives
+	return game_manager.lives
 
 func is_game_over() -> bool:
-	return current_lives <= 0
+	return game_manager.lives <= 0

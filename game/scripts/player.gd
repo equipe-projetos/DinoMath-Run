@@ -16,13 +16,18 @@ enum State { IDLE, RUNNING, JUMPING, FALLING, HIT }
 @export_group("Movimento")
 @export var run_speed: float = 5.0
 @export var jump_velocity: float = 7.0
+## Tempo parado após uma colisão, mesmo quando o modelo não tem animação de dano.
+@export var hit_recovery_time: float = 0.6
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var _game_manager: GameManager = get_node("/root/GameManager") as GameManager
 
 var current_state: State = State.IDLE
 var jump_requested: bool = false
+var _hit_recovery_left: float = 0.0
 
 signal jump_performed()
+signal hit_started()
 
 func _ready() -> void:
 	add_to_group("player")
@@ -38,9 +43,15 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 
 	match current_state:
-		State.IDLE, State.HIT:
+		State.IDLE:
 			velocity.x = 0.0
 			velocity.z = 0.0
+		State.HIT:
+			velocity.x = 0.0
+			velocity.z = 0.0
+			_hit_recovery_left -= delta
+			if _hit_recovery_left <= 0.0:
+				_set_state(State.RUNNING)
 		State.JUMPING:
 			_apply_forward_motion()
 			if velocity.y <= 0.0:
@@ -57,10 +68,14 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-func handle_obstacle_collision() -> void:
+## Retorna true quando o impacto realmente causa dano.
+func handle_obstacle_collision() -> bool:
 	if current_state == State.JUMPING or current_state == State.FALLING:
-		return
+		return false
+	if current_state == State.HIT:
+		return false
 	hit()
+	return true
 
 
 func request_jump() -> void:
@@ -76,7 +91,11 @@ func _do_jump() -> void:
 
 
 func hit() -> void:
+	if current_state == State.HIT:
+		return
+	_hit_recovery_left = maxf(hit_recovery_time, 0.0)
 	_set_state(State.HIT)
+	hit_started.emit()
 
 
 func start_running() -> void:
@@ -85,8 +104,11 @@ func start_running() -> void:
 
 
 func _apply_forward_motion() -> void:
+	var speed_scale: float = 1.0
+	if is_instance_valid(_game_manager):
+		speed_scale = _game_manager.world_speed_scale
 	velocity.x = 0.0
-	velocity.z = -run_speed
+	velocity.z = -run_speed * speed_scale
 
 
 func _set_state(new_state: State) -> void:
@@ -123,4 +145,4 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 				_set_state(State.RUNNING if is_on_floor() else State.FALLING)
 		anim_hit:
 			if current_state == State.HIT:
-				_set_state(State.IDLE)
+				_set_state(State.RUNNING)
