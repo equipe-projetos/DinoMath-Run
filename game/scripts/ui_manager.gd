@@ -101,17 +101,17 @@ func _update_hud() -> void:
 func _show_question() -> void:
 	if question_label:
 		question_label.visible = true
-	for btn in alternative_buttons:
-		btn.visible = true
-		btn.disabled = false
+	for i in range(alternative_buttons.size()):
+		alternative_buttons[i].visible = true
+		alternative_buttons[i].disabled = false
 	_update_alternatives_visual()
 
 
 func _hide_question() -> void:
 	if question_label:
 		question_label.visible = false
-	for btn in alternative_buttons:
-		btn.visible = false
+	for i in range(alternative_buttons.size()):
+		alternative_buttons[i].visible = false
 
 
 func _update_alternatives_visual() -> void:
@@ -174,7 +174,7 @@ func _input(event: InputEvent) -> void:
 			elif event.keycode == KEY_RIGHT or event.keycode == KEY_D:
 				selected_index = (selected_index + 1) % current_alternatives.size()
 				_update_alternatives_visual()
-			elif event.keycode == KEY_RETURN or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE:
+			elif event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE:
 				_submit_selected()
 
 
