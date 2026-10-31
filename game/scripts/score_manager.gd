@@ -20,6 +20,7 @@ var combo: int = 0
 var high_score: int = 0
 
 var _save_file: ConfigFile
+var _high_score_dirty: bool = false
 
 func _ready() -> void:
 	_load_high_score()
@@ -61,14 +62,18 @@ func _check_high_score() -> void:
 	if score > high_score:
 		high_score = score
 		high_score_changed.emit(high_score)
-		_save_high_score()
+		_high_score_dirty = true
 
-func _save_high_score() -> void:
+func save_high_score() -> void:
+	if not _high_score_dirty:
+		return
 	_save_file = ConfigFile.new()
 	_save_file.set_value("score", "high_score", high_score)
 	var err: Error = _save_file.save(HIGH_SCORE_PATH)
 	if err != OK:
 		push_error("Falha ao salvar recorde: %s" % str(err))
+	else:
+		_high_score_dirty = false
 
 func _load_high_score() -> void:
 	_save_file = ConfigFile.new()
@@ -77,6 +82,10 @@ func _load_high_score() -> void:
 		high_score = _save_file.get_value("score", "high_score", 0)
 	else:
 		high_score = 0
+	_high_score_dirty = false
+
+func _exit_tree() -> void:
+	save_high_score()
 
 func get_score() -> int:
 	return score
