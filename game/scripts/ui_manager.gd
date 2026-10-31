@@ -48,6 +48,12 @@ func _ready() -> void:
 	_hide_question()
 
 
+func reset() -> void:
+	current_lives = max_lives
+	_update_hud()
+	_hide_question()
+
+
 func _on_question_asked(question: Dictionary) -> void:
 	question_label.text = question["text"]
 	current_alternatives = question["alternatives"]
