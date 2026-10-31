@@ -74,6 +74,16 @@ func get_obstacle_frequency(score: int) -> float:
 		_:
 			return MAX_OBSTACLE_FREQUENCY
 
+func get_obstacle_gap_factor(score: int) -> float:
+	## Fator de 0 a 1 usado pelo ObstacleSpawner: 0 gera obstáculos mais
+	## espaçados e 1 os aproxima da distância mínima.
+	var frequency: float = get_obstacle_frequency(score)
+	return clampf(
+		inverse_lerp(INITIAL_OBSTACLE_FREQUENCY, MAX_OBSTACLE_FREQUENCY, frequency),
+		0.0,
+		1.0
+	)
+
 func _get_tier(score: int) -> int:
 	if score >= SCORE_TIER_HARD:
 		return SCORE_TIER_HARD
