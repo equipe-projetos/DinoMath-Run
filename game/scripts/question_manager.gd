@@ -49,10 +49,8 @@ func submit_answer(answer: Variant) -> void:
 
 func _on_correct() -> void:
 	score.add_combo_points()
+	# O GameManager agenda o salto na distância correta do obstáculo.
 	answer_correct.emit(score.get_combo() > 1, score.get_score())
-	var player: Node = get_tree().get_first_node_in_group("player")
-	if player is Player:
-		player.request_jump()
 	current_state = State.IDLE
 	cycle_finished.emit()
 
