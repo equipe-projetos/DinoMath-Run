@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkuj0ttkb4m86"]
+
+[ext_resource type="ArrayMesh" path="res://assets/models/rock_cone_mesh.res" id="1_mesh"]
+[ext_resource type="Material" uid="uid://b2ih1dxdemcuf" path="res://assets/materials/rock_material.tres" id="2_material"]
+
+[node name="RockCone" type="Node3D"]
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.7597, 0, 0, 0, 0.7597, 0, 0, 0, 0.7597, 0.03067, 0.50748, 0.09727)
+mesh = ExtResource("1_mesh")
+material_override = ExtResource("2_material")
