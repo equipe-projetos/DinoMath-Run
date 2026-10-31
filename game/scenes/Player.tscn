@@ -6,7 +6,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_fv16g"]
 size = Vector3(0.63, 1.115, 2.5019531)
 
-[node name="Player" type="CharacterBody3D" unique_id=1965148915]
+[node name="Player" type="CharacterBody3D" groups=["player"] unique_id=1965148915]
 script = ExtResource("1_p0vlq")
 
 [node name="T_Rex" parent="." unique_id=981774964 instance=ExtResource("2_v6fml")]
