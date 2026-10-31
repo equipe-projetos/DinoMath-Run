@@ -36,13 +36,18 @@ var _variations: Array[Node3D] = []
 var _base_collision_layer: int
 var _base_collision_mask: int
 
-var _camera: Camera3D
 var _hit_area: Area3D
 
 func _ready() -> void:
 	_camera = get_viewport().get_camera_3d()
 	add_to_group("obstacle")
 	_setup_hit_area()
+	_base_collision_layer = collision_layer
+	_base_collision_mask = collision_mask
+	_cache_variations()
+
+	if not is_active:
+		_apply_active_state(false)
 
 
 func _setup_hit_area() -> void:
@@ -59,12 +64,6 @@ func _setup_hit_area() -> void:
 func _on_hit_area_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
 		hit_player.emit(body)
-	_base_collision_layer = collision_layer
-	_base_collision_mask = collision_mask
-	_cache_variations()
-
-	if not is_active:
-		_apply_active_state(false)
 
 
 func _physics_process(delta: float) -> void:
