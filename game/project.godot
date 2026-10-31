@@ -19,7 +19,7 @@ config/icon="res://icon.svg"
 
 DifficultyManager="res://scripts/difficulty_manager.gd"
 ScoreManager="res://scripts/score_manager.gd"
-UIManager="res://scripts/ui_manager.gd"
+QuestionManager="res://scripts/question_manager.gd"
 
 [display]
 

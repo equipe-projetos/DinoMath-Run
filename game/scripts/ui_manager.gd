@@ -119,7 +119,7 @@ func _update_alternatives_visual() -> void:
 		if i < current_alternatives.size():
 			alternative_buttons[i].text = str(current_alternatives[i])
 			alternative_buttons[i].button_group = null
-			alternative_buttons[i].pressed = (i == selected_index)
+			alternative_buttons[i].button_pressed = (i == selected_index)
 		else:
 			alternative_buttons[i].text = ""
 			alternative_buttons[i].visible = false
