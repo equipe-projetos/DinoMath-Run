@@ -12,7 +12,7 @@ enum State { IDLE, ASKING, WAITING, RESULT }
 var current_state: State = State.IDLE
 
 var _current_question: Dictionary = {}
-var _current_answer: int = 0
+var _current_answer: Variant = 0
 var _question_active: bool = false
 var _timer_node: Timer
 
@@ -36,7 +36,7 @@ func start_question() -> void:
 	_timer_node.start(response_time)
 	question_asked.emit(_current_question)
 
-func submit_answer(answer: int) -> void:
+func submit_answer(answer: Variant) -> void:
 	if not _question_active or current_state != State.WAITING:
 		return
 	_timer_node.stop()
@@ -81,16 +81,17 @@ func cancel_question() -> void:
 func is_question_active() -> bool:
 	return _question_active
 
-func get_current_answer() -> int:
+func get_current_answer() -> Variant:
 	return _current_answer
 
 func generate_question(difficulty_score: int) -> Dictionary:
 	var operations: Array = difficulty.get_allowed_operations(difficulty_score)
 	var op: String = operations[randi() % operations.size()]
-	var a: int
-	var b: int
-	var result: int
-	var text: String
+	var a: int = 0
+	var b: int = 0
+	var result: int = 0
+	var text: String = ""
+	var answer_value: Variant = 0
 	var unknown_type: String = "result"
 
 	var unknown_chance: float = difficulty.get_unknown_chance(difficulty_score)
@@ -124,6 +125,7 @@ func generate_question(difficulty_score: int) -> Dictionary:
 					result = randi() % 12 + 1
 					a = b * result
 					text = "%d ÷ %d = ?" % [a, b]
+			answer_value = result
 		"operand1":
 			match op:
 				"+":
@@ -136,6 +138,17 @@ func generate_question(difficulty_score: int) -> Dictionary:
 					result = randi() % 100
 					a = result + b
 					text = "? - %d = %d" % [b, result]
+				"*":
+					b = randi() % 12 + 1
+					result = randi() % 12 + 1
+					a = b * result
+					text = "? × %d = %d" % [b, result]
+				"/":
+					b = randi() % 9 + 1
+					result = randi() % 12 + 1
+					a = b * result
+					text = "? ÷ %d = %d" % [b, result]
+			answer_value = a
 		"operand2":
 			match op:
 				"+":
@@ -151,23 +164,49 @@ func generate_question(difficulty_score: int) -> Dictionary:
 						b = -b
 						result = a - b
 					text = "%d - ? = %d" % [a, result]
+				"*":
+					a = randi() % 12 + 1
+					b = randi() % 12 + 1
+					result = a * b
+					text = "%d × ? = %d" % [a, result]
+				"/":
+					b = randi() % 9 + 1
+					result = randi() % 12 + 1
+					a = b * result
+					text = "%d ÷ ? = %d" % [a, result]
+			answer_value = b
 		"operator":
-			a = randi() % 100
-			b = randi() % 100
-			if b == 0:
-				b = 1
-			op = "+"
-			result = 0
-			text = "%d ? %d = %d" % [a, b, a + b]
+			a = randi() % 20 + 1
+			b = randi() % 9 + 1
+			op = operations[randi() % operations.size()]
+			match op:
+				"+":
+					result = a + b
+				"-":
+					if a < b:
+						var temp: int = a
+						a = b
+						b = temp
+					result = a - b
+				"*":
+					a = randi() % 12 + 1
+					b = randi() % 12 + 1
+					result = a * b
+				"/":
+					b = randi() % 9 + 1
+					result = randi() % 12 + 1
+					a = b * result
+			text = "%d ? %d = %d" % [a, b, result]
+			answer_value = op
 
 	var alternatives: Array
 	if unknown_type == "operator":
-		alternatives = _generate_operator_alternatives(op)
+		alternatives = _generate_operator_alternatives(str(answer_value))
 	else:
-		alternatives = _generate_alternatives(result)
+		alternatives = _generate_alternatives(int(answer_value))
 	var question: Dictionary = {
 		"text": text,
-		"answer": result,
+		"answer": answer_value,
 		"alternatives": alternatives,
 		"operation": op,
 		"unknown_type": unknown_type
