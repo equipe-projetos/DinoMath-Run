@@ -1,12 +1,11 @@
 class_name UIManager
 extends CanvasLayer
 
-signal answer_selected(answer: int)
-
 @onready var question_manager: QuestionManager = get_node("/root/QuestionManager")
 @onready var score_manager: ScoreManager = get_node("/root/ScoreManager")
 @onready var difficulty: DifficultyManager = get_node("/root/DifficultyManager")
 
+@onready var question_container: Control = $MarginContainer/VBoxContainer/QuestionContainer
 @onready var score_label: Label = $MarginContainer/VBoxContainer/HBoxContainer_Score/ScoreLabel
 @onready var lives_label: Label = $MarginContainer/VBoxContainer/HBoxContainer_Lives/LivesLabel
 @onready var combo_label: Label = $MarginContainer/VBoxContainer/HBoxContainer_Combo/ComboLabel
@@ -25,7 +24,7 @@ signal answer_selected(answer: int)
 
 var current_lives: int = 3
 var current_alternatives: Array = []
-var current_correct_answer: int = 0
+var current_correct_answer: Variant = 0
 var selected_index: int = 0
 var _timer_node: Timer
 
@@ -61,7 +60,7 @@ func _on_question_asked(question: Dictionary) -> void:
 	_timer_node.start(time_limit)
 
 
-func _on_answer_correct(is_combo: bool, points: int) -> void:
+func _on_answer_correct(_is_combo: bool, _points: int) -> void:
 	_timer_node.stop()
 	_hide_question()
 
@@ -80,11 +79,11 @@ func _on_answer_timeout() -> void:
 	_hide_question()
 
 
-func _on_score_changed(new_score: int) -> void:
+func _on_score_changed(_new_score: int) -> void:
 	_update_hud()
 
 
-func _on_combo_changed(new_combo: int) -> void:
+func _on_combo_changed(_new_combo: int) -> void:
 	_update_hud()
 
 
@@ -99,8 +98,8 @@ func _update_hud() -> void:
 
 
 func _show_question() -> void:
-	if question_label:
-		question_label.visible = true
+	question_container.visible = true
+	question_label.visible = true
 	for i in range(alternative_buttons.size()):
 		alternative_buttons[i].visible = true
 		alternative_buttons[i].disabled = false
@@ -108,8 +107,8 @@ func _show_question() -> void:
 
 
 func _hide_question() -> void:
-	if question_label:
-		question_label.visible = false
+	question_container.visible = false
+	question_label.visible = false
 	for i in range(alternative_buttons.size()):
 		alternative_buttons[i].visible = false
 
@@ -128,6 +127,7 @@ func _update_alternatives_visual() -> void:
 func _on_answer_button_pressed(index: int) -> void:
 	selected_index = index
 	_update_alternatives_visual()
+	_submit_selected()
 
 
 func _submit_selected() -> void:
@@ -138,43 +138,31 @@ func _submit_selected() -> void:
 		question_manager.submit_answer(answer)
 
 
-func _process_input() -> void:
-	if not question_manager.is_question_active():
+func _process(_delta: float) -> void:
+	if _timer_node == null or _timer_node.is_stopped():
 		return
-
-	if Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("w"):
-		selected_index = (selected_index - 1) % current_alternatives.size()
-		_update_alternatives_visual()
-	elif Input.is_action_just_pressed("ui_down") or Input.is_action_just_pressed("s"):
-		selected_index = (selected_index + 1) % current_alternatives.size()
-		_update_alternatives_visual()
-	elif Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("a"):
-		selected_index = (selected_index - 1) % current_alternatives.size()
-		_update_alternatives_visual()
-	elif Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("d"):
-		selected_index = (selected_index + 1) % current_alternatives.size()
-		_update_alternatives_visual()
-	elif Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("ui_cancel"):
-		_submit_selected()
+	timer_label.text = "Tempo: %.1fs" % _timer_node.time_left
 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.pressed:
-			if event.keycode == KEY_UP or event.keycode == KEY_W:
-				selected_index = (selected_index - 1) % current_alternatives.size()
-				_update_alternatives_visual()
-			elif event.keycode == KEY_DOWN or event.keycode == KEY_S:
-				selected_index = (selected_index + 1) % current_alternatives.size()
-				_update_alternatives_visual()
-			elif event.keycode == KEY_LEFT or event.keycode == KEY_A:
-				selected_index = (selected_index - 1) % current_alternatives.size()
-				_update_alternatives_visual()
-			elif event.keycode == KEY_RIGHT or event.keycode == KEY_D:
-				selected_index = (selected_index + 1) % current_alternatives.size()
-				_update_alternatives_visual()
-			elif event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE:
-				_submit_selected()
+	if not question_manager.is_question_active() or current_alternatives.is_empty():
+		return
+
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_UP or event.keycode == KEY_W:
+			selected_index = (selected_index - 1) % current_alternatives.size()
+			_update_alternatives_visual()
+		elif event.keycode == KEY_DOWN or event.keycode == KEY_S:
+			selected_index = (selected_index + 1) % current_alternatives.size()
+			_update_alternatives_visual()
+		elif event.keycode == KEY_LEFT or event.keycode == KEY_A:
+			selected_index = (selected_index - 1) % current_alternatives.size()
+			_update_alternatives_visual()
+		elif event.keycode == KEY_RIGHT or event.keycode == KEY_D:
+			selected_index = (selected_index + 1) % current_alternatives.size()
+			_update_alternatives_visual()
+		elif event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE:
+			_submit_selected()
 
 
 func get_lives() -> int:

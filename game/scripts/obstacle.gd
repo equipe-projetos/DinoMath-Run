@@ -39,6 +39,8 @@ var _base_collision_mask: int
 var _hit_area: Area3D
 
 func _ready() -> void:
+	_base_collision_layer = collision_layer
+	_base_collision_mask = collision_mask
 	_camera = get_viewport().get_camera_3d()
 	add_to_group("obstacle")
 	_setup_hit_area()
