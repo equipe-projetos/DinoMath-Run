@@ -3,22 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://dx7ocd4wefrac" path="res://scenes/Player.tscn" id="1_ibkli"]
 [ext_resource type="Script" uid="uid://bg1omiuiakql7" path="res://scripts/camera_controller.gd" id="2_camera"]
 [ext_resource type="Script" uid="uid://ddmn5nxin5ce" path="res://scripts/obstacle_spawner.gd" id="3_spawner"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_5uaoo"]
-size = Vector3(1, 1, 20)
-
-[sub_resource type="BoxMesh" id="BoxMesh_q1waa"]
-size = Vector3(1, 1, 20)
+[ext_resource type="Script" uid="uid://dnm3y44gti5t1" path="res://scripts/ground_manager.gd" id="4_ground"]
 
 [node name="Game" type="Node3D" unique_id=1893505870]
-
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=646359236]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1712102942]
-shape = SubResource("BoxShape3D_5uaoo")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=306978504]
-mesh = SubResource("BoxMesh_q1waa")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=255190232]
 transform = Transform3D(0.351123, 0, -0.936329, -0.161907, 0.984936, -0.060715, 0.922225, 0.172917, 0.345834, 8, 3, 9.5)
@@ -33,3 +20,6 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 
 [node name="ObstacleSpawner" type="Node3D" parent="." unique_id=1018335247]
 script = ExtResource("3_spawner")
+
+[node name="GroundManager" type="Node3D" parent="." unique_id=2039486512]
+script = ExtResource("4_ground")
