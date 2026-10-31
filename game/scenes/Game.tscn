@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dx7ocd4wefrac" path="res://scenes/Player.tscn" id="1_ibkli"]
 [ext_resource type="Script" uid="uid://bg1omiuiakql7" path="res://scripts/camera_controller.gd" id="2_camera"]
+[ext_resource type="Script" uid="uid://ddmn5nxin5ce" path="res://scripts/obstacle_spawner.gd" id="3_spawner"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5uaoo"]
 size = Vector3(1, 1, 20)
@@ -29,3 +30,6 @@ transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.965
 
 [node name="Player" parent="." unique_id=1965148915 instance=ExtResource("1_ibkli")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.5, 8)
+
+[node name="ObstacleSpawner" type="Node3D" parent="." unique_id=1018335247]
+script = ExtResource("3_spawner")
