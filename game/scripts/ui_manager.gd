@@ -116,14 +116,13 @@ func _hide_question() -> void:
 
 func _update_alternatives_visual() -> void:
 	for i in range(alternative_buttons.size()):
-		var btn: Button = alternative_buttons[i]
 		if i < current_alternatives.size():
-			btn.text = str(current_alternatives[i])
-			btn.button_group = null
-			btn.pressed = (i == selected_index)
+			alternative_buttons[i].text = str(current_alternatives[i])
+			alternative_buttons[i].button_group = null
+			alternative_buttons[i].pressed = (i == selected_index)
 		else:
-			btn.text = ""
-			btn.visible = false
+			alternative_buttons[i].text = ""
+			alternative_buttons[i].visible = false
 
 
 func _on_answer_button_pressed(index: int) -> void:
