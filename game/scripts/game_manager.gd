@@ -173,6 +173,7 @@ func request_game_over() -> void:
 	if is_instance_valid(_player):
 		_player.set_physics_process(false)
 
+	score_manager.save_high_score()
 	_show_game_over()
 
 
