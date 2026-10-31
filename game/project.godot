@@ -16,6 +16,7 @@ config/name="DinoMath"
 
 DifficultyManager="res://scripts/difficulty_manager.gd"
 ScoreManager="res://scripts/score_manager.gd"
+UIManager="res://scripts/ui_manager.gd"
 run/main_scene="uid://dx7ocd4wefrac"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"

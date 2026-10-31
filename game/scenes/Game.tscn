@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d3et6i6ifj43r"]
 
 [ext_resource type="PackedScene" uid="uid://dx7ocd4wefrac" path="res://scenes/Player.tscn" id="1_ibkli"]
+[ext_resource type="PackedScene" uid="uid://ui_hud_main" path="res://scenes/ui.tscn" id="2_ui_hud"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5uaoo"]
 size = Vector3(1, 1, 20)
@@ -26,3 +27,5 @@ transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.965
 
 [node name="Player" parent="." unique_id=1965148915 instance=ExtResource("1_ibkli")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.5, 8)
+
+[node name="UI" parent="." instance=ExtResource("2_ui_hud")]

@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://ui_hud_main"]
+
+[ext_resource type="Script" uid="uid://ui_manager_script" path="res://scripts/ui_manager.gd" id="1_xywz9"]
+
+[sub_resource type="StyleBoxFlat" id="stylebox_button"]
+bg_color = Color(0.2, 0.6, 1, 1)
+bg_color_hover = Color(0.3, 0.7, 1, 1)
+bg_color_pressed = Color(0.1, 0.5, 0.8, 1)
+border_width = Vector2(2, 2)
+border_color = Color(0.8, 0.8, 0.8, 1)
+corner_radius = Vector2(8, 8)
+
+[sub_resource style_box_default]
+bg_color = Color(0.15, 0.15, 0.2, 0.9)
+border_width = Vector2(1, 1)
+border_color = Color(0.4, 0.4, 0.4, 1)
+corner_radius = Vector2(10, 10)
+
+[node name="UI" type="CanvasLayer" unique_id=1]
+script = ExtResource("1_xywz9")
+
+[node name="MarginContainer" parent="." unique_id=2]
+margin_left = 20
+margin_top = 20
+margin_right = 20
+margin_bottom = 20
+
+[node name="VBoxContainer" parent="MarginContainer" unique_id=3]
+separation = 10
+
+[node name="HBoxContainer_Score" parent="VBoxContainer" unique_id=4]
+[node name="ScoreLabel" parent="HBoxContainer_Score" type="Label" unique_id=5]
+text = "Score: 0"
+
+[node name="HBoxContainer_Lives" parent="VBoxContainer" unique_id=6]
+[node name="LivesLabel" parent="HBoxContainer_Lives" type="Label" unique_id=7]
+text = "Vidas: 3"
+
+[node name="HBoxContainer_Combo" parent="VBoxContainer" unique_id=8]
+[node name="ComboLabel" parent="HBoxContainer_Combo" type="Label" unique_id=9]
+text = ""
+
+[node name="QuestionContainer" parent="VBoxContainer" unique_id=10]
+visible = false
+
+[node name="QuestionLabel" parent="QuestionContainer" type="Label" unique_id=11]
+text = "Pergunta: ?"
+alignment = 1
+
+[node name="TimerLabel" parent="QuestionContainer" type="Label" unique_id=12]
+text = "Tempo: 5.0s"
+alignment = 1
+
+[node name="AlternativesContainer" parent="QuestionContainer" type="HBoxContainer" unique_id=13]
+alignment = 1
+
+[node name="AltBtn1" parent="AlternativesContainer" type="Button" unique_id=14]
+text = "1"
+custom_styles/style_box = SubResource("stylebox_button")
+
+[node name="AltBtn2" parent="AlternativesContainer" type="Button" unique_id=15]
+text = "2"
+custom_styles/style_box = SubResource("stylebox_button")
+
+[node name="AltBtn3" parent="AlternativesContainer" type="Button" unique_id=16]
+text = "3"
+custom_styles/style_box = SubResource("stylebox_button")
+
+[node name="AltBtn4" parent="AlternativesContainer" type="Button" unique_id=17]
+text = "4"
+custom_styles/style_box = SubResource("stylebox_button")

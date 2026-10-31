@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1my18joq13eo"]
+[gd_scene format=3 uid="uid://b1my18joq13eo"]
 
 [ext_resource type="Script" path="res://scripts/obstacle.gd" id="1_drdry"]
 [ext_resource type="PackedScene" path="res://assets/models/cactus.glb" id="2_cjuko"]
