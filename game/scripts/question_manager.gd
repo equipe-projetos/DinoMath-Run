@@ -31,7 +31,7 @@ func start_question() -> void:
 	_current_question = generate_question(difficulty.get_current_score())
 	_current_answer = _current_question["answer"]
 	_question_active = true
-	current_state = State.ASKING
+	current_state = State.WAITING
 	var response_time: float = difficulty.get_response_time(difficulty.get_current_score())
 	_timer_node.start(response_time)
 	question_asked.emit(_current_question)
@@ -50,6 +50,9 @@ func submit_answer(answer: int) -> void:
 func _on_correct() -> void:
 	score.add_combo_points()
 	answer_correct.emit(score.get_combo() > 1, score.get_score())
+	var player: Node = get_tree().get_first_node_in_group("player")
+	if player is Player:
+		player.request_jump()
 	current_state = State.IDLE
 	cycle_finished.emit()
 
@@ -153,11 +156,15 @@ func generate_question(difficulty_score: int) -> Dictionary:
 			b = randi() % 100
 			if b == 0:
 				b = 1
-			result = a + b
 			op = "+"
-			text = "%d ? %d = %d" % [a, b, result]
+			result = 0
+			text = "%d ? %d = %d" % [a, b, a + b]
 
-	var alternatives: Array = _generate_alternatives(result)
+	var alternatives: Array
+	if unknown_type == "operator":
+		alternatives = _generate_operator_alternatives(op)
+	else:
+		alternatives = _generate_alternatives(result)
 	var question: Dictionary = {
 		"text": text,
 		"answer": result,
@@ -194,5 +201,15 @@ func _generate_alternatives(correct: int) -> Array:
 		if distractor in alternatives:
 			continue
 		alternatives.append(distractor)
+	alternatives.shuffle()
+	return alternatives
+
+
+func _generate_operator_alternatives(correct_op: String) -> Array:
+	var all_ops: Array = ["+", "-", "*", "/"]
+	var alternatives: Array = [correct_op]
+	for op in all_ops:
+		if op != correct_op and alternatives.size() < 4:
+			alternatives.append(op)
 	alternatives.shuffle()
 	return alternatives

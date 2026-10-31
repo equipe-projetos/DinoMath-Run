@@ -5,6 +5,7 @@ extends AnimatableBody3D
 ## visão da câmera ou reciclado por um ObstacleSpawner (object pooling).
 
 signal despawned(obstacle: Obstacle)
+signal hit_player(player_node: Node)
 
 @export_group("Movimento")
 ## Velocidade de deslocamento, em unidades por segundo.
@@ -18,6 +19,9 @@ signal despawned(obstacle: Obstacle)
 ## Posição Z usada para despawnar quando não há câmera ativa.
 @export var fallback_despawn_z: float = 20.0
 
+@export_group("Colisão")
+## Raio da área de detecção de colisão com o player.
+@export var hit_radius: float = 0.7
 @export_group("Pooling")
 ## Se verdadeiro, o obstáculo é destruído ao sair de cena. Spawners configuram
 ## como falso para reutilizar a mesma instância.
@@ -32,9 +36,29 @@ var _variations: Array[Node3D] = []
 var _base_collision_layer: int
 var _base_collision_mask: int
 
+var _camera: Camera3D
+var _hit_area: Area3D
 
 func _ready() -> void:
 	_camera = get_viewport().get_camera_3d()
+	add_to_group("obstacle")
+	_setup_hit_area()
+
+
+func _setup_hit_area() -> void:
+	_hit_area = Area3D.new()
+	var shape = CollisionShape3D.new()
+	shape.shape = SphereShape3D.new()
+	shape.shape.radius = hit_radius
+	_hit_area.add_child(shape)
+	_hit_area.position = Vector3(0, 0.5, 0)
+	add_child(_hit_area)
+	_hit_area.body_entered.connect(_on_hit_area_body_entered)
+
+
+func _on_hit_area_body_entered(body: Node) -> void:
+	if body.is_in_group("player"):
+		hit_player.emit(body)
 	_base_collision_layer = collision_layer
 	_base_collision_mask = collision_mask
 	_cache_variations()

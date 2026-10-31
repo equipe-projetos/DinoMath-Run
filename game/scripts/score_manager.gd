@@ -71,10 +71,6 @@ func _save_high_score() -> void:
 		push_error("Falha ao salvar recorde: %s" % str(err))
 
 func _load_high_score() -> void:
-	var file: FileAccess = FileAccess.open(HIGH_SCORE_PATH, FileAccess.READ)
-	if file == null:
-		high_score = 0
-		return
 	_save_file = ConfigFile.new()
 	var err: Error = _save_file.load(HIGH_SCORE_PATH)
 	if err == OK:

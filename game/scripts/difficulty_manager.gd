@@ -3,7 +3,7 @@ extends Node
 
 const INITIAL_SPEED: float = 5.0
 const MAX_SPEED: float = 12.0
-const SPEED_ACCELERATION: float = 0.5
+const SPEED_ACCELERATION: float = 0.0032
 
 const INITIAL_RESPONSE_TIME: float = 5.0
 const MIN_RESPONSE_TIME: float = 2.0
@@ -27,16 +27,7 @@ func get_current_score() -> int:
 	return current_score
 
 func get_speed(score: int) -> float:
-	var tier: int = _get_tier(score)
-	match tier:
-		SCORE_TIER_EASY:
-			return INITIAL_SPEED
-		SCORE_TIER_MEDIUM:
-			return lerp(INITIAL_SPEED, MAX_SPEED * 0.7, 0.5)
-		SCORE_TIER_HARD:
-			return lerp(INITIAL_SPEED, MAX_SPEED, 0.8)
-		_:
-			return MAX_SPEED
+	return min(INITIAL_SPEED + (score * SPEED_ACCELERATION), MAX_SPEED)
 
 func get_response_time(score: int) -> float:
 	var tier: int = _get_tier(score)
