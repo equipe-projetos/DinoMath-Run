@@ -35,7 +35,6 @@ var _camera: Camera3D
 var _variations: Array[Node3D] = []
 var _base_collision_layer: int
 var _base_collision_mask: int
-
 var _hit_area: Area3D
 
 func _ready() -> void:
@@ -44,8 +43,6 @@ func _ready() -> void:
 	_camera = get_viewport().get_camera_3d()
 	add_to_group("obstacle")
 	_setup_hit_area()
-	_base_collision_layer = collision_layer
-	_base_collision_mask = collision_mask
 	_cache_variations()
 
 	if not is_active:

@@ -1,28 +1,28 @@
 [gd_scene format=3 uid="uid://d3et6i6ifj43r"]
 
-[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" uid="uid://dx7ocd4wefrac" path="res://scenes/Player.tscn" id="1_ibkli"]
 [ext_resource type="PackedScene" path="res://scenes/ui.tscn" id="2_ui_hud"]
-[ext_resource type="Script" path="res://scripts/camera_controller.gd" id="3_camera"]
-[ext_resource type="Script" path="res://scripts/obstacle_spawner.gd" id="4_spawner"]
-[ext_resource type="Script" path="res://scripts/ground_manager.gd" id="5_ground"]
+[ext_resource type="Script" uid="uid://bg1omiuiakql7" path="res://scripts/camera_controller.gd" id="2_camera"]
+[ext_resource type="Script" uid="uid://ddmn5nxin5ce" path="res://scripts/obstacle_spawner.gd" id="3_spawner"]
+[ext_resource type="Script" uid="uid://dnm3y44gti5t1" path="res://scripts/ground_manager.gd" id="4_ground"]
 
-[node name="Game" type="Node3D"]
+[node name="Game" type="Node3D" unique_id=1893505870]
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=255190232]
 transform = Transform3D(0.351123, 0, -0.936329, -0.161907, 0.984936, -0.060715, 0.922225, 0.172917, 0.345834, 8, 3, 9.5)
 current = true
-script = ExtResource("3_camera")
+script = ExtResource("2_camera")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1175291398]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 5, 12)
 
-[node name="Player" parent="." instance=ExtResource("1_player")]
+[node name="Player" parent="." unique_id=1965148915 instance=ExtResource("1_ibkli")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.5, 8)
 
 [node name="UI" parent="." instance=ExtResource("2_ui_hud")]
 
-[node name="ObstacleSpawner" type="Node3D" parent="."]
-script = ExtResource("4_spawner")
+[node name="ObstacleSpawner" type="Node3D" parent="." unique_id=1018335247]
+script = ExtResource("3_spawner")
 
-[node name="GroundManager" type="Node3D" parent="."]
-script = ExtResource("5_ground")
+[node name="GroundManager" type="Node3D" parent="." unique_id=2039486512]
+script = ExtResource("4_ground")
