@@ -37,6 +37,10 @@ var _variations: Array[Node3D] = []
 var _base_collision_layer: int
 var _base_collision_mask: int
 var _hit_area: Area3D
+var _cactus_base_position: Vector3
+var _cactus_base_rotation: Vector3
+var _knock_tween: Tween
+var _knocked_over: bool = false
 
 func _ready() -> void:
 	_base_collision_layer = collision_layer
@@ -46,6 +50,7 @@ func _ready() -> void:
 	add_to_group("obstacle")
 	_setup_hit_area()
 	_cache_variations()
+	_cache_cactus_pose()
 
 	if not is_active:
 		_apply_active_state(false)
@@ -74,7 +79,7 @@ func _on_hit_area_body_entered(body: Node) -> void:
 
 	var did_hit: Variant = body.call("handle_obstacle_collision")
 	if did_hit is bool and did_hit:
-		despawn()
+		knock_over()
 
 
 func _physics_process(delta: float) -> void:
@@ -99,6 +104,7 @@ func activate(
 	yaw: float = 0.0,
 	variation: int = -1
 ) -> void:
+	_reset_knock_over()
 	global_position = spawn_position
 	move_speed = speed
 	scale = Vector3.ONE * maxf(size_scale, 0.01)
@@ -114,6 +120,7 @@ func activate(
 
 ## Desativa e esconde o obstáculo para que ele volte ao pool.
 func deactivate() -> void:
+	_reset_knock_over()
 	if not is_active and not visible:
 		return
 
@@ -121,10 +128,74 @@ func deactivate() -> void:
 	_apply_active_state(false)
 
 
+## Derruba o cacto após uma colisão. O obstáculo continua visível, mas deixa
+## de bloquear o player e de causar dano; será reciclado atrás do jogador.
+func knock_over() -> void:
+	if _knocked_over or not is_active or is_queued_for_deletion():
+		return
+
+	_knocked_over = true
+	set_physics_process(false)
+	collision_layer = 0
+	collision_mask = 0
+
+	if is_instance_valid(_hit_area):
+		_hit_area.set_deferred("monitoring", false)
+
+	if is_in_group("obstacles"):
+		remove_from_group("obstacles")
+
+	_play_knock_over_tween()
+
+
+func _play_knock_over_tween() -> void:
+	if not is_instance_valid(_cactus):
+		return
+
+	if _knock_tween != null and _knock_tween.is_valid():
+		_knock_tween.kill()
+
+	var fall_rotation := _cactus_base_rotation + Vector3(0.0, 0.0, deg_to_rad(-82.0))
+	var fall_position := _cactus_base_position + Vector3(0.55, 0.0, -0.35)
+
+	_knock_tween = create_tween()
+	_knock_tween.set_parallel(true)
+
+	var rotation_tween: PropertyTweener = _knock_tween.tween_property(
+		_cactus, "rotation", fall_rotation, 0.45
+	)
+	rotation_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+	var position_tween: PropertyTweener = _knock_tween.tween_property(
+		_cactus, "position", fall_position, 0.45
+	)
+	position_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+
+func _cache_cactus_pose() -> void:
+	if not is_instance_valid(_cactus):
+		return
+	_cactus_base_position = _cactus.position
+	_cactus_base_rotation = _cactus.rotation
+
+
+## Restaura o cacto para a pose original antes de reutilizá-lo no pool.
+func _reset_knock_over() -> void:
+	if _knock_tween != null and _knock_tween.is_valid():
+		_knock_tween.kill()
+	_knock_tween = null
+	_knocked_over = false
+
+	if is_instance_valid(_cactus):
+		_cactus.position = _cactus_base_position
+		_cactus.rotation = _cactus_base_rotation
+
+
 func despawn() -> void:
 	if not is_active or is_queued_for_deletion():
 		return
 
+	_reset_knock_over()
 	set_physics_process(false)
 	is_active = false
 	despawned.emit(self)

@@ -14,5 +14,3 @@ script = ExtResource("1_p0vlq")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=815925789]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.557, -0.19067383)
 shape = SubResource("BoxShape3D_fv16g")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=493821363]

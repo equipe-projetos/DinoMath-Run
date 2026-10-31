@@ -11,13 +11,27 @@ signal lives_changed(lives: int)
 enum State { MENU, PLAYING, PAUSED, GAME_OVER }
 
 const MAX_LIVES: int = 3
-const MIN_TRIGGER_DISTANCE: float = 12.0
-const TRIGGER_MARGIN: float = 1.0
+## Distância mínima para disparar a pergunta, em unidades do mundo.
+const MIN_TRIGGER_DISTANCE: float = 5.0
+## Folga extra entre o fim da janela de resposta e o início do salto.
+const TRIGGER_MARGIN: float = 0.75
 
 ## Fração da velocidade normal aplicada ao mundo durante a pergunta.
-const SLOW_MOTION_SCALE: float = 0.35
+## Mais baixa que o padrão do GDD para que o dinossauro fique visivelmente
+## próximo do cacto sem alcançá-lo antes de o jogador responder.
+const SLOW_MOTION_SCALE: float = 0.12
 ## Velocidade da transição de slow motion, em escala por segundo.
 const SLOW_MOTION_TRANSITION: float = 3.0
+
+## Distância entre o dinossauro e o cacto no momento em que o salto começa.
+## Metade do comprimento do player + metade da profundidade do cacto.
+const JUMP_CLEAR_DISTANCE: float = 1.5
+## Tempo necessário para o dinossauro subir acima da altura do cacto.
+const JUMP_RISE_TIME: float = 0.13
+## Folga de segurança do salto.
+const JUMP_LEAD_MARGIN: float = 0.5
+## O salto automático só começa depois que o mundo retomou parte da velocidade.
+const JUMP_MIN_SPEED_SCALE: float = 0.85
 
 ## Evita perder duas vidas pelo mesmo erro (resposta errada seguida da colisão
 ## com o obstáculo que gerou a pergunta).
@@ -42,6 +56,12 @@ var _target_speed_scale: float = 1.0
 var _life_loss_cooldown: float = 0.0
 var _current_scene_id: int = 0
 
+## Salto automático agendado após o acerto: em vez de saltar imediatamente
+## (e pousar antes do cacto), o jogador salta quando a distância correta é
+## atingida.
+var _jump_pending: bool = false
+var _jump_obstacle: Obstacle
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -61,10 +81,13 @@ func _process(delta: float) -> void:
 func _physics_process(_delta: float) -> void:
 	if current_state != State.PLAYING:
 		return
-	if question_manager.is_question_active():
-		return
 	if not _ensure_player():
 		return
+	if question_manager.is_question_active():
+		return
+
+	_update_pending_jump()
+
 	if _player.current_state == Player.State.HIT:
 		return
 
@@ -95,6 +118,8 @@ func start_game() -> void:
 	world_speed_scale = 1.0
 	_target_speed_scale = 1.0
 	_triggered_obstacle = null
+	_jump_pending = false
+	_jump_obstacle = null
 
 	_bind_player()
 
@@ -272,15 +297,48 @@ func _on_score_changed(new_score: int) -> void:
 
 
 func _on_answer_correct(_is_combo: bool, _points: int) -> void:
-	# O obstáculo que gerou a pergunta é removido para que o salto automático
-	# não esbarre nele depois que a pergunta terminar.
+	# O cacto continua no cenário. O salto é agendado para acontecer na
+	# distância correta, em vez de removê-lo ou saltar longe dele.
 	if is_instance_valid(_triggered_obstacle):
-		_triggered_obstacle.despawn()
-		_triggered_obstacle = null
+		_jump_obstacle = _triggered_obstacle
+		_jump_pending = true
+	else:
+		_jump_obstacle = null
+		_jump_pending = false
 
 
 func _on_question_failed() -> void:
+	_jump_pending = false
+	_jump_obstacle = null
 	lose_life()
+
+
+## Executa o salto automático quando o dinossauro está na distância de
+## decolagem. Só roda depois que a pergunta terminou e o mundo retomou a
+## velocidade, para o salto não ficar curto demais.
+func _update_pending_jump() -> void:
+	if not _jump_pending:
+		return
+	if not is_instance_valid(_jump_obstacle):
+		_jump_pending = false
+		return
+	if not is_instance_valid(_player):
+		return
+	if _player.current_state != Player.State.RUNNING:
+		return
+	if world_speed_scale < JUMP_MIN_SPEED_SCALE:
+		return
+
+	var distance: float = _player.global_position.z - _jump_obstacle.global_position.z
+	if distance <= 0.0:
+		_jump_pending = false
+		_jump_obstacle = null
+		return
+
+	if distance <= _get_jump_lead():
+		_player.request_jump()
+		_jump_pending = false
+		_jump_obstacle = null
 
 
 func _on_question_cycle_finished() -> void:
@@ -329,13 +387,28 @@ func _nearest_obstacle_ahead() -> Obstacle:
 	return nearest
 
 
-## Distância suficiente para o jogador responder antes de alcançar o obstáculo.
-## O slow motion reduz a velocidade do mundo, então a distância pode ser menor.
+## Distância suficiente para o jogador responder antes de alcançar o obstáculo
+## e ainda ter espaço para o salto. Inclui a distância percorrida durante a
+## transição para o slow motion, que começa em velocidade cheia.
 func _get_trigger_distance() -> float:
-	var speed: float = 5.0
-	if is_instance_valid(_player):
-		speed = maxf(_player.run_speed, 0.001)
-
+	var speed: float = _get_player_speed()
 	var response: float = difficulty.get_response_time(score_manager.get_score())
-	var slow_distance: float = speed * (response + TRIGGER_MARGIN) * SLOW_MOTION_SCALE
-	return maxf(slow_distance, MIN_TRIGGER_DISTANCE)
+
+	var slow_distance: float = speed * response * SLOW_MOTION_SCALE
+	var transition_distance: float = (
+		speed * pow(1.0 - SLOW_MOTION_SCALE, 2.0) / (2.0 * SLOW_MOTION_TRANSITION)
+	)
+	var required: float = slow_distance + transition_distance + _get_jump_lead() + TRIGGER_MARGIN
+	return maxf(required, MIN_TRIGGER_DISTANCE)
+
+
+## Distância do cacto em que o salto automático deve começar. Garante que o
+## dinossauro já esteja acima da altura do cacto quando a hitbox se aproximar.
+func _get_jump_lead() -> float:
+	return JUMP_CLEAR_DISTANCE + _get_player_speed() * JUMP_RISE_TIME + JUMP_LEAD_MARGIN
+
+
+func _get_player_speed() -> float:
+	if is_instance_valid(_player):
+		return maxf(_player.run_speed, 0.001)
+	return 5.0
