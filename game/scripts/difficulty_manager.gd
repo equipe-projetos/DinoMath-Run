@@ -5,10 +5,11 @@ const INITIAL_SPEED: float = 5.0
 const MAX_SPEED: float = 12.0
 const SPEED_ACCELERATION: float = 0.0032
 
-const INITIAL_RESPONSE_TIME: float = 8.0
+const INITIAL_RESPONSE_TIME: float = 10.0
 const MIN_RESPONSE_TIME: float = 2.0
-const RESPONSE_TIME_MEDIUM: float = 6.0
-const RESPONSE_TIME_HARD: float = 4.0
+const RESPONSE_TIME_MEDIUM: float = 8.0
+const RESPONSE_TIME_HARD: float = 6.0
+const RESPONSE_TIME_EXPERT: float = 4.0
 
 const INITIAL_OBSTACLE_FREQUENCY: float = 3.0
 const MAX_OBSTACLE_FREQUENCY: float = 1.5
@@ -16,7 +17,9 @@ const MAX_OBSTACLE_FREQUENCY: float = 1.5
 const SCORE_TIER_EASY: int = 0
 const SCORE_TIER_MEDIUM: int = 150
 const SCORE_TIER_HARD: int = 400
-const SCORE_TIER_MAX: int = 800
+const SCORE_TIER_EXPERT: int = 800
+const SCORE_TIER_MAX: int = 1500
+const SCORE_TIER_FREQUENCY_MAX: int = 800
 
 var current_score: int = 0
 
@@ -36,11 +39,17 @@ func get_response_time(score: int) -> float:
 	var clamped_score: float = clampf(float(score), float(SCORE_TIER_EASY), float(SCORE_TIER_MAX))
 	if clamped_score >= SCORE_TIER_MAX:
 		return MIN_RESPONSE_TIME
+	if clamped_score >= SCORE_TIER_EXPERT:
+		return lerpf(
+			RESPONSE_TIME_EXPERT,
+			MIN_RESPONSE_TIME,
+			inverse_lerp(float(SCORE_TIER_EXPERT), float(SCORE_TIER_MAX), clamped_score)
+		)
 	if clamped_score >= SCORE_TIER_HARD:
 		return lerpf(
 			RESPONSE_TIME_HARD,
-			MIN_RESPONSE_TIME,
-			inverse_lerp(float(SCORE_TIER_HARD), float(SCORE_TIER_MAX), clamped_score)
+			RESPONSE_TIME_EXPERT,
+			inverse_lerp(float(SCORE_TIER_HARD), float(SCORE_TIER_EXPERT), clamped_score)
 		)
 	if clamped_score >= SCORE_TIER_MEDIUM:
 		return lerpf(
@@ -77,7 +86,7 @@ func get_unknown_chance(score: int) -> float:
 
 func get_obstacle_frequency(score: int) -> float:
 	var progress: float = clampf(
-		inverse_lerp(float(SCORE_TIER_EASY), float(SCORE_TIER_MAX), float(score)),
+		inverse_lerp(float(SCORE_TIER_EASY), float(SCORE_TIER_FREQUENCY_MAX), float(score)),
 		0.0,
 		1.0
 	)

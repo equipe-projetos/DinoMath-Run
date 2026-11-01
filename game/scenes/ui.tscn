@@ -269,7 +269,7 @@ show_percentage = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.94, 0.69, 0.35, 1)
 theme_override_font_sizes/font_size = 18
-text = "Tempo: 8.0s"
+text = "Tempo: 10.0s"
 horizontal_alignment = 1
 
 [node name="AlternativesContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent"]
