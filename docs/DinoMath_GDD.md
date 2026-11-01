@@ -446,11 +446,10 @@ O jogo é infinito e não possui fases tradicionais: a dificuldade é escalada d
 
 | Score | Operações | Números | Incógnitas | Tempo de resposta |
 |---|---|---|---|---|
-| 0–100 | Adição, subtração | Pequenos (até ~15) | Não | 5,0 s |
-| 100–250 | + subtração maior, multiplicação simples | Médios (até ~30) | Não | 4,0 s |
-| 250–500 | + divisão exata | Maiores (até ~50) | Sim (baixa frequência) | 3,5 s |
-| 500–1000 | Todas as quatro operações | Até dois dígitos | Sim (frequência média) | 3,0 s |
-| 1000+ | Todas + operador desconhecido | Até dois dígitos | Sim (alta frequência) | 2,0–2,5 s |
+| 0–150 | Adição, subtração | Pequenos (até ~15) | Não | 8,0 → 6,0 s |
+| 150–400 | + multiplicação simples | Médios (até ~30) | 20% das questões | 6,0 → 4,0 s |
+| 400–800 | + divisão exata | Maiores (até ~50) | 40% das questões | 4,0 → 2,0 s |
+| 800+ | Todas + operador desconhecido | Até dois dígitos | 40% das questões | 2,0 s |
 
 Os valores acima são referência inicial e devem ser ajustados durante os testes de jogabilidade (Seção 34).
 
@@ -514,9 +513,9 @@ xychart-beta
 ```mermaid
 xychart-beta
     title "Tempo de resposta x Score (segundos)"
-    x-axis [0, 100, 250, 500, 1000, 2000]
-    y-axis "Tempo (s)" 0 --> 6
-    line [5.0, 4.0, 3.5, 3.0, 2.5, 2.0]
+    x-axis [0, 150, 400, 800, 1500]
+    y-axis "Tempo (s)" 0 --> 8
+    line [8.0, 6.0, 4.0, 2.0, 2.0]
 ```
 
 A curva demonstra velocidade e dificuldade matemática crescendo de forma gradual até atingir seus respectivos limites (`MAX_SPEED` e `MIN_RESPONSE_TIME`), evitando crescimento exponencial agressivo. Prefere-se um crescimento linear suavizado e previsível.
