@@ -3,6 +3,8 @@ extends CharacterBody3D
 
 enum State { IDLE, RUNNING, JUMPING, FALLING, HIT }
 
+const WALK_STRIDE_LENGTH: float = 1.5
+
 @export_group("Animações")
 ## O modelo T_Rex.glb não possui animações de corrida/salto próprias, então a
 ## caminhada é reaproveitada para os estados de deslocamento e o rugido para o
@@ -14,15 +16,15 @@ enum State { IDLE, RUNNING, JUMPING, FALLING, HIT }
 @export var anim_hit: StringName = &"Roar"
 @export var anim_roar: StringName = &"Roar"
 @export var anim_bite: StringName = &"Bite"
-## Multiplicador base da animação de deslocamento. A caminhada do GLB é mais
-## lenta que a corrida do jogo, então ela é acelerada para não parecer um
-## deslize.
-@export var run_animation_speed: float = 1.5
+## Ajuste fino sobre a sincronização automática entre passada e velocidade.
+@export var run_animation_speed: float = 1.0
+## Limite de playback para manter a caminhada legível em velocidade de corrida.
+@export var max_animation_speed: float = 2.5
 ## Velocidade mínima da animação durante o slow motion (nunca congela).
 @export var min_animation_speed: float = 0.2
 
 @export_group("Movimento")
-@export var run_speed: float = 5.0
+@export var run_speed: float = 3.0
 @export var jump_velocity: float = 7.0
 ## Tempo parado após uma colisão, mesmo quando o modelo não tem animação de dano.
 @export var hit_recovery_time: float = 0.6
@@ -33,6 +35,7 @@ enum State { IDLE, RUNNING, JUMPING, FALLING, HIT }
 var current_state: State = State.IDLE
 var jump_requested: bool = false
 var _hit_recovery_left: float = 0.0
+var _walk_cycle_duration: float = 1.0
 
 signal jump_performed()
 signal hit_started()
@@ -40,6 +43,8 @@ signal hit_started()
 func _ready() -> void:
 	add_to_group("player")
 	_configure_animations()
+	if animation_player.has_animation(anim_run):
+		_walk_cycle_duration = animation_player.get_animation(anim_run).length
 	if not animation_player.animation_finished.is_connected(_on_animation_player_animation_finished):
 		animation_player.animation_finished.connect(_on_animation_player_animation_finished)
 	_update_animation_speed()
@@ -101,6 +106,7 @@ func _do_jump() -> void:
 		return
 	velocity.y = jump_velocity
 	_set_state(State.JUMPING)
+	Sfx.play_jump(get_tree())
 	jump_performed.emit()
 
 
@@ -174,11 +180,13 @@ func _update_animation_speed() -> void:
 	if is_instance_valid(_game_manager):
 		world_scale = _game_manager.world_speed_scale
 
-	var base_speed: float = 1.0
+	var playback_speed: float = world_scale
 	if current_state == State.RUNNING or current_state == State.JUMPING or current_state == State.FALLING:
-		base_speed = run_animation_speed
+		var linear_speed: float = run_speed * world_scale
+		playback_speed = linear_speed * _walk_cycle_duration / WALK_STRIDE_LENGTH * run_animation_speed
+		playback_speed = minf(playback_speed, max_animation_speed)
 
-	animation_player.speed_scale = maxf(world_scale * base_speed, min_animation_speed)
+	animation_player.speed_scale = maxf(playback_speed, min_animation_speed)
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:

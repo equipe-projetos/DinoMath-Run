@@ -93,12 +93,14 @@ func _on_question_asked(question: Dictionary) -> void:
 func _on_answer_correct(_is_combo: bool, _points: int) -> void:
 	_timer_node.stop()
 	_hide_question()
+	Sfx.play_correct(get_tree())
 	_play_flash(Color(0.35, 0.95, 0.4, FLASH_ALPHA))
 
 
 func _on_answer_wrong() -> void:
 	_timer_node.stop()
 	_hide_question()
+	Sfx.play_wrong(get_tree())
 	_play_flash(Color(1.0, 0.35, 0.25, FLASH_ALPHA))
 	_start_shake()
 
@@ -106,6 +108,7 @@ func _on_answer_wrong() -> void:
 func _on_answer_timeout() -> void:
 	_timer_node.stop()
 	_hide_question()
+	Sfx.play_wrong(get_tree())
 	_play_flash(Color(1.0, 0.35, 0.25, FLASH_ALPHA))
 	_start_shake()
 
