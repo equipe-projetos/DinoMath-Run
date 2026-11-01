@@ -12,6 +12,11 @@ extends Camera3D
 var _ground_y: float
 var _current_y: float
 
+## Screen shake ao errar a resposta (issue #37).
+var _shake_time_left: float = 0.0
+var _shake_duration: float = 0.0
+var _shake_strength: float = 0.0
+
 
 func _ready() -> void:
 	process_physics_priority = 100
@@ -40,12 +45,33 @@ func _physics_process(delta: float) -> void:
 	_update_position()
 
 
+## Aplica um tremor breve de câmera, usado pelo UIManager ao errar (issue #37).
+func shake(strength: float = 0.35, duration: float = 0.25) -> void:
+	_shake_strength = strength
+	_shake_duration = duration
+	_shake_time_left = duration
+
+
 func _update_position() -> void:
 	global_position = Vector3(
 		target.global_position.x + offset.x,
 		_current_y,
 		target.global_position.z + offset.z
 	)
+
+	if _shake_time_left > 0.0:
+		_shake_time_left -= get_physics_process_delta_time()
+		var decay: float = maxf(_shake_time_left / maxf(_shake_duration, 0.001), 0.0)
+		var offset_shake := Vector3(
+			randf_range(-1.0, 1.0),
+			randf_range(-1.0, 1.0),
+			0.0
+		) * _shake_strength * decay
+		global_position += offset_shake
+
+		if _shake_time_left <= 0.0:
+			_shake_time_left = 0.0
+			_shake_strength = 0.0
 
 
 func _look_at_player() -> void:
