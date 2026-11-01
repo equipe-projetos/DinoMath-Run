@@ -707,8 +707,8 @@ O MVP utiliza exclusivamente o **teclado**.
 | Ação | Tecla |
 |---|---|
 | Navegar entre alternativas | Setas ou A/D |
-| Confirmar resposta | Enter |
-| Ação auxiliar (ex.: confirmar em menus) | Space |
+| Confirmar resposta | Enter ou Space |
+| Ação auxiliar (ex.: navegar em menus) | Setas ou WASD |
 
 Como o salto é sempre automático (disparado pela resposta correta), o jogador não precisa controlar diretamente o movimento do personagem — isso reduz a complexidade de input e mantém o foco na parte educacional.
 
