@@ -18,11 +18,13 @@ const WALK_STRIDE_LENGTH: float = 1.5
 @export var anim_bite: StringName = &"Bite"
 ## Ajuste fino sobre a sincronização automática entre passada e velocidade.
 @export var run_animation_speed: float = 1.0
+## Limite de playback para manter a caminhada legível em velocidade de corrida.
+@export var max_animation_speed: float = 2.5
 ## Velocidade mínima da animação durante o slow motion (nunca congela).
 @export var min_animation_speed: float = 0.2
 
 @export_group("Movimento")
-@export var run_speed: float = 5.0
+@export var run_speed: float = 3.0
 @export var jump_velocity: float = 7.0
 ## Tempo parado após uma colisão, mesmo quando o modelo não tem animação de dano.
 @export var hit_recovery_time: float = 0.6
@@ -182,6 +184,7 @@ func _update_animation_speed() -> void:
 	if current_state == State.RUNNING or current_state == State.JUMPING or current_state == State.FALLING:
 		var linear_speed: float = run_speed * world_scale
 		playback_speed = linear_speed * _walk_cycle_duration / WALK_STRIDE_LENGTH * run_animation_speed
+		playback_speed = minf(playback_speed, max_animation_speed)
 
 	animation_player.speed_scale = maxf(playback_speed, min_animation_speed)
 
