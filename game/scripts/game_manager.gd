@@ -347,6 +347,7 @@ func _on_question_cycle_finished() -> void:
 
 
 func _on_player_hit() -> void:
+	Sfx.play_hit(get_tree())
 	lose_life()
 
 

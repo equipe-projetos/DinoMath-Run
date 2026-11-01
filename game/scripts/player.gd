@@ -101,6 +101,7 @@ func _do_jump() -> void:
 		return
 	velocity.y = jump_velocity
 	_set_state(State.JUMPING)
+	Sfx.play_jump(get_tree())
 	jump_performed.emit()
 
 
