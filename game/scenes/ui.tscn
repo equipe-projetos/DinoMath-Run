@@ -1,124 +1,399 @@
-[gd_scene format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui_manager.gd" id="1_ui"]
 
-[sub_resource type="StyleBoxFlat" id="style_normal"]
-bg_color = Color(0.2, 0.6, 1, 1)
+[sub_resource type="StyleBoxFlat" id="HUDPanel"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.09, 0.055, 0.035, 0.92)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.8, 0.8, 0.8, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(0.91, 0.55, 0.22, 0.45)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
 
-[sub_resource type="StyleBoxFlat" id="style_hover"]
-bg_color = Color(0.3, 0.7, 1, 1)
+[sub_resource type="StyleBoxFlat" id="QuestionPanel"]
+content_margin_left = 30.0
+content_margin_top = 18.0
+content_margin_right = 30.0
+content_margin_bottom = 18.0
+bg_color = Color(0.09, 0.055, 0.035, 0.93)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(0.91, 0.55, 0.22, 0.4)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 14
+shadow_offset = Vector2(0, 8)
 
-[sub_resource type="StyleBoxFlat" id="style_pressed"]
-bg_color = Color(0.1, 0.5, 0.8, 1)
+[sub_resource type="StyleBoxFlat" id="AltNormal"]
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+bg_color = Color(0.16, 0.1, 0.06, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.91, 0.55, 0.22, 0.7)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.28)
+shadow_size = 6
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="AltHover"]
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+bg_color = Color(0.23, 0.14, 0.08, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.71, 0.35, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.32)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="AltSelected"]
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+bg_color = Color(0.78, 0.33, 0.15, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1, 0.84, 0.25, 1)
+border_color = Color(1, 0.82, 0.45, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.32)
+shadow_size = 6
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="AltFocus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.82, 0.45, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="TimerBackground"]
+bg_color = Color(0.09, 0.055, 0.035, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.91, 0.55, 0.22, 0.4)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxFlat" id="TimerFill"]
+bg_color = Color(0.94, 0.69, 0.23, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="LifeFull"]
+bg_color = Color(0.56, 0.82, 0.42, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.24, 0.4, 0.16, 0.95)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
 [node name="UI" type="CanvasLayer" groups=["ui"]]
 script = ExtResource("1_ui")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="TopBar" type="Control" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 18.0
+offset_top = 14.0
+offset_right = -18.0
+offset_bottom = 90.0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Row" type="HBoxContainer" parent="TopBar"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/separation = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="ScorePanel" type="PanelContainer" parent="TopBar/Row"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("HUDPanel")
+
+[node name="ScoreRow" type="HBoxContainer" parent="TopBar/Row/ScorePanel"]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer_Score" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ScoreCaption" type="Label" parent="TopBar/Row/ScorePanel/ScoreRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.6, 0.85)
+theme_override_font_sizes/font_size = 16
+text = "PONTOS"
+vertical_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_Score"]
-text = "Score: 0"
+[node name="ScoreLabel" type="Label" parent="TopBar/Row/ScorePanel/ScoreRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.55, 1)
+theme_override_font_sizes/font_size = 30
+text = "0"
+vertical_alignment = 1
 
-[node name="HBoxContainer_Lives" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-
-[node name="LivesLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_Lives"]
-text = "Vidas: 3"
-
-[node name="HBoxContainer_Combo" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-
-[node name="ComboLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_Combo"]
-text = ""
-
-[node name="QuestionContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ComboLabel" type="Label" parent="TopBar/Row"]
+unique_name_in_owner = true
 visible = false
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.72, 0.32, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.08, 0.04, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 20
+text = "COMBO x2"
+
+[node name="Spacer" type="Control" parent="TopBar/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="LivesPanel" type="PanelContainer" parent="TopBar/Row"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("HUDPanel")
+
+[node name="LivesRow" type="HBoxContainer" parent="TopBar/Row/LivesPanel"]
+layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="QuestionLabel" type="Label" parent="MarginContainer/VBoxContainer/QuestionContainer"]
+[node name="LivesCaption" type="Label" parent="TopBar/Row/LivesPanel/LivesRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.6, 0.85)
+theme_override_font_sizes/font_size = 16
+text = "VIDAS"
+vertical_alignment = 1
+
+[node name="LifeIcon1" type="Panel" parent="TopBar/Row/LivesPanel/LivesRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("LifeFull")
+
+[node name="LifeIcon2" type="Panel" parent="TopBar/Row/LivesPanel/LivesRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("LifeFull")
+
+[node name="LifeIcon3" type="Panel" parent="TopBar/Row/LivesPanel/LivesRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("LifeFull")
+
+[node name="QuestionArea" type="Control" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -250.0
+offset_right = -18.0
+grow_horizontal = 2
+grow_vertical = 1
+mouse_filter = 2
+
+[node name="Center" type="CenterContainer" parent="QuestionArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="QuestionPanel" type="PanelContainer" parent="QuestionArea/Center"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("QuestionPanel")
+
+[node name="QuestionContainer" type="VBoxContainer" parent="QuestionArea/Center/QuestionPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="QuestionLabel" type="Label" parent="QuestionArea/Center/QuestionPanel/QuestionContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.58, 0.22, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.08, 0.04, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.45)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 40
 text = "Pergunta: ?"
 horizontal_alignment = 1
 
-[node name="TimerLabel" type="Label" parent="MarginContainer/VBoxContainer/QuestionContainer"]
-text = "Tempo: 5.0s"
-horizontal_alignment = 1
-
-[node name="AlternativesContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/QuestionContainer"]
-alignment = 1
+[node name="TimerRow" type="HBoxContainer" parent="QuestionArea/Center/QuestionPanel/QuestionContainer"]
+layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="AltBtn1" type="Button" parent="MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer"]
-custom_minimum_size = Vector2(64, 48)
+[node name="TimerLabel" type="Label" parent="QuestionArea/Center/QuestionPanel/QuestionContainer/TimerRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.94, 0.69, 0.23, 1)
+theme_override_font_sizes/font_size = 20
+text = "Tempo: 5.0s"
+vertical_alignment = 1
+
+[node name="TimerBar" type="ProgressBar" parent="QuestionArea/Center/QuestionPanel/QuestionContainer/TimerRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 14)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 5.0
+value = 5.0
+show_percentage = false
+theme_override_styles/background = SubResource("TimerBackground")
+theme_override_styles/fill = SubResource("TimerFill")
+
+[node name="AlternativesContainer" type="HBoxContainer" parent="QuestionArea/Center/QuestionPanel/QuestionContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="AltBtn1" type="Button" parent="QuestionArea/Center/QuestionPanel/QuestionContainer/AlternativesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(78, 58)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.87, 0.75, 1)
+theme_override_colors/font_focus_color = Color(1, 0.95, 0.86, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("AltNormal")
+theme_override_styles/hover = SubResource("AltHover")
+theme_override_styles/pressed = SubResource("AltSelected")
+theme_override_styles/focus = SubResource("AltFocus")
 toggle_mode = true
-theme_override_styles/normal = SubResource("style_normal")
-theme_override_styles/hover = SubResource("style_hover")
-theme_override_styles/pressed = SubResource("style_pressed")
 text = "1"
 
-[node name="AltBtn2" type="Button" parent="MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer"]
-custom_minimum_size = Vector2(64, 48)
+[node name="AltBtn2" type="Button" parent="QuestionArea/Center/QuestionPanel/QuestionContainer/AlternativesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(78, 58)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.87, 0.75, 1)
+theme_override_colors/font_focus_color = Color(1, 0.95, 0.86, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("AltNormal")
+theme_override_styles/hover = SubResource("AltHover")
+theme_override_styles/pressed = SubResource("AltSelected")
+theme_override_styles/focus = SubResource("AltFocus")
 toggle_mode = true
-theme_override_styles/normal = SubResource("style_normal")
-theme_override_styles/hover = SubResource("style_hover")
-theme_override_styles/pressed = SubResource("style_pressed")
 text = "2"
 
-[node name="AltBtn3" type="Button" parent="MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer"]
-custom_minimum_size = Vector2(64, 48)
+[node name="AltBtn3" type="Button" parent="QuestionArea/Center/QuestionPanel/QuestionContainer/AlternativesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(78, 58)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.87, 0.75, 1)
+theme_override_colors/font_focus_color = Color(1, 0.95, 0.86, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("AltNormal")
+theme_override_styles/hover = SubResource("AltHover")
+theme_override_styles/pressed = SubResource("AltSelected")
+theme_override_styles/focus = SubResource("AltFocus")
 toggle_mode = true
-theme_override_styles/normal = SubResource("style_normal")
-theme_override_styles/hover = SubResource("style_hover")
-theme_override_styles/pressed = SubResource("style_pressed")
 text = "3"
 
-[node name="AltBtn4" type="Button" parent="MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer"]
-custom_minimum_size = Vector2(64, 48)
+[node name="AltBtn4" type="Button" parent="QuestionArea/Center/QuestionPanel/QuestionContainer/AlternativesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(78, 58)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.87, 0.75, 1)
+theme_override_colors/font_focus_color = Color(1, 0.95, 0.86, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("AltNormal")
+theme_override_styles/hover = SubResource("AltHover")
+theme_override_styles/pressed = SubResource("AltSelected")
+theme_override_styles/focus = SubResource("AltFocus")
 toggle_mode = true
-theme_override_styles/normal = SubResource("style_normal")
-theme_override_styles/hover = SubResource("style_hover")
-theme_override_styles/pressed = SubResource("style_pressed")
 text = "4"
 
 [node name="FeedbackFlash" type="ColorRect" parent="."]
+unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
