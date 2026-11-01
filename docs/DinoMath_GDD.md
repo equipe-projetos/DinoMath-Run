@@ -446,10 +446,11 @@ O jogo é infinito e não possui fases tradicionais: a dificuldade é escalada d
 
 | Score | Operações | Números | Incógnitas | Tempo de resposta |
 |---|---|---|---|---|
-| 0–150 | Adição, subtração | Pequenos (até ~15) | Não | 8,0 → 6,0 s |
-| 150–400 | + multiplicação simples | Médios (até ~30) | 20% das questões | 6,0 → 4,0 s |
-| 400–800 | + divisão exata | Maiores (até ~50) | 40% das questões | 4,0 → 2,0 s |
-| 800+ | Todas + operador desconhecido | Até dois dígitos | 40% das questões | 2,0 s |
+| 0–150 | Adição, subtração | Pequenos (até ~15) | Não | 10,0 → 8,0 s |
+| 150–400 | + multiplicação simples | Médios (até ~30) | 20% das questões | 8,0 → 6,0 s |
+| 400–800 | + divisão exata | Maiores (até ~50) | 40% das questões | 6,0 → 4,0 s |
+| 800–1500 | Todas + operador desconhecido | Até dois dígitos | 40% das questões | 4,0 → 2,0 s |
+| 1500+ | Todas + operador desconhecido | Até dois dígitos | 40% das questões | 2,0 s |
 
 Os valores acima são referência inicial e devem ser ajustados durante os testes de jogabilidade (Seção 34).
 
@@ -514,8 +515,8 @@ xychart-beta
 xychart-beta
     title "Tempo de resposta x Score (segundos)"
     x-axis [0, 150, 400, 800, 1500]
-    y-axis "Tempo (s)" 0 --> 8
-    line [8.0, 6.0, 4.0, 2.0, 2.0]
+    y-axis "Tempo (s)" 0 --> 10
+    line [10.0, 8.0, 6.0, 4.0, 2.0]
 ```
 
 A curva demonstra velocidade e dificuldade matemática crescendo de forma gradual até atingir seus respectivos limites (`MAX_SPEED` e `MIN_RESPONSE_TIME`), evitando crescimento exponencial agressivo. Prefere-se um crescimento linear suavizado e previsível.
@@ -529,7 +530,14 @@ INITIAL_SPEED
 MAX_SPEED
 SPEED_ACCELERATION
 INITIAL_RESPONSE_TIME
+RESPONSE_TIME_MEDIUM
+RESPONSE_TIME_HARD
+RESPONSE_TIME_EXPERT
 MIN_RESPONSE_TIME
+SCORE_TIER_MEDIUM
+SCORE_TIER_HARD
+SCORE_TIER_EXPERT
+SCORE_TIER_MAX
 OBSTACLE_FREQUENCY
 MAX_OBSTACLE_FREQUENCY
 MATH_DIFFICULTY_LEVEL
@@ -543,20 +551,25 @@ Isso permite que a equipe ajuste rapidamente o balanceamento durante os testes, 
 
 | Ação | Pontos |
 |---|---|
-| Resposta correta | +10 |
+| Resposta correta | 10 + bônus de faixa (até +20) |
 | Obstáculo ultrapassado | +10 |
-| Combo (sequência de acertos) | multiplicador sobre os pontos acima |
+| Bônus de combo | +2 por acerto consecutivo, até +20 |
 
-### Combo (recurso secundário, opcional)
+### Pontuação por faixa de dificuldade
 
-| Sequência de acertos | Multiplicador |
+| Faixa de score | Pontos base por acerto |
 |---|---|
-| 3+ acertos seguidos | x2 |
-| 5+ acertos seguidos | x3 |
-| 8+ acertos seguidos | x5 |
-| 12+ acertos seguidos | x10 |
+| 0–149 | 10 |
+| 150–399 | 15 |
+| 400–799 | 20 |
+| 800–1499 | 25 |
+| 1500+ | 30 |
 
-O combo é zerado ao errar uma questão ou colidir com um obstáculo. Por ser um recurso secundário, o sistema de combo **não deve comprometer o cronograma do MVP** — pode ser implementado por último ou movido para o backlog "should have" (Seção 33) caso o tempo se torne escasso.
+### Combo
+
+O bônus de combo é aditivo: `min(acertos consecutivos, 10) × 2`, limitado a **+20 pontos**. Assim, uma resposta correta vale entre 10 e 50 pontos, dependendo da faixa e da sequência atual.
+
+O combo é zerado ao errar uma questão, ao esgotar o tempo ou ao colidir com um obstáculo.
 
 ---
 
@@ -946,6 +959,7 @@ flowchart LR
 | Frequência | Aumenta gradualmente conforme o score, respeitando um teto (`MAX_OBSTACLE_FREQUENCY`) |
 | Velocidade | Considerada em conjunto com o tempo de resposta ao calcular a distância mínima |
 | Garantia de resposta possível | O spawner nunca gera um obstáculo cuja distância seja insuficiente para o tempo de resposta vigente |
+| Cobertura de chão | O `GroundManager` mantém chão além da distância efetiva de spawn do próximo obstáculo, com margem de segurança |
 
 A regra central é: **nunca gerar uma situação matematicamente ou fisicamente impossível de ser superada**, considerando a velocidade atual e o tempo de resposta disponível.
 
