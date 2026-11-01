@@ -18,6 +18,16 @@ extends CanvasLayer
 	$MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer/AltBtn3,
 	$MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer/AltBtn4,
 ]
+@onready var feedback_flash: ColorRect = $FeedbackFlash
+
+## Duração do flash de feedback (issue #37).
+const FLASH_DURATION: float = 0.35
+## Intensidade máxima do alpha do flash, para não poluir a tela.
+const FLASH_ALPHA: float = 0.35
+## Amplitude do screen shake ao errar, em unidades do mundo (3D).
+const SHAKE_STRENGTH: float = 0.35
+## Tempo de decaimento do screen shake.
+const SHAKE_DURATION: float = 0.25
 
 var current_alternatives: Array = []
 var current_correct_answer: Variant = 0
@@ -64,16 +74,21 @@ func _on_question_asked(question: Dictionary) -> void:
 func _on_answer_correct(_is_combo: bool, _points: int) -> void:
 	_timer_node.stop()
 	_hide_question()
+	_play_flash(Color(0.35, 0.95, 0.4, FLASH_ALPHA))
 
 
 func _on_answer_wrong() -> void:
 	_timer_node.stop()
 	_hide_question()
+	_play_flash(Color(1.0, 0.35, 0.25, FLASH_ALPHA))
+	_start_shake()
 
 
 func _on_answer_timeout() -> void:
 	_timer_node.stop()
 	_hide_question()
+	_play_flash(Color(1.0, 0.35, 0.25, FLASH_ALPHA))
+	_start_shake()
 
 
 func _on_lives_changed(_new_lives: int) -> void:
@@ -140,9 +155,30 @@ func _submit_selected() -> void:
 
 
 func _process(_delta: float) -> void:
-	if _timer_node == null or _timer_node.is_stopped():
+	if _timer_node != null and not _timer_node.is_stopped():
+		timer_label.text = "Tempo: %.1fs" % _timer_node.time_left
+
+
+## Mostra um flash de cor sobre a tela e o esvanece (issue #37).
+func _play_flash(color: Color) -> void:
+	if feedback_flash == null:
 		return
-	timer_label.text = "Tempo: %.1fs" % _timer_node.time_left
+
+	feedback_flash.color = color
+	var tween: Tween = create_tween()
+	tween.tween_property(feedback_flash, "color:a", 0.0, FLASH_DURATION) \
+		.set_trans(Tween.TRANS_CUBIC) \
+		.set_ease(Tween.EASE_OUT)
+
+
+## Aciona o screen shake da câmera 3D ao errar a resposta (issue #37).
+func _start_shake() -> void:
+	var camera: Camera3D = get_viewport().get_camera_3d()
+	if camera == null:
+		return
+
+	if camera.has_method("shake"):
+		camera.shake(SHAKE_STRENGTH, SHAKE_DURATION)
 
 
 func _input(event: InputEvent) -> void:
