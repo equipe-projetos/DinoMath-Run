@@ -6,17 +6,18 @@ extends CanvasLayer
 @onready var difficulty: DifficultyManager = get_node("/root/DifficultyManager")
 @onready var game_manager: GameManager = get_node("/root/GameManager") as GameManager
 
-@onready var question_container: Control = $MarginContainer/VBoxContainer/QuestionContainer
-@onready var score_label: Label = $MarginContainer/VBoxContainer/HBoxContainer_Score/ScoreLabel
-@onready var lives_label: Label = $MarginContainer/VBoxContainer/HBoxContainer_Lives/LivesLabel
-@onready var combo_label: Label = $MarginContainer/VBoxContainer/HBoxContainer_Combo/ComboLabel
-@onready var question_label: Label = $MarginContainer/VBoxContainer/QuestionContainer/QuestionLabel
-@onready var timer_label: Label = $MarginContainer/VBoxContainer/QuestionContainer/TimerLabel
+@onready var question_container: Control = $MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer
+@onready var score_label: Label = $MarginContainer/VBoxContainer/TopBar/ScorePanel/Content/ScoreLabel
+@onready var lives_label: Label = $MarginContainer/VBoxContainer/TopBar/LivesPanel/Content/LivesLabel
+@onready var combo_label: Label = $MarginContainer/VBoxContainer/TopBar/ComboPanel/Content/ComboLabel
+@onready var question_label: Label = $MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/QuestionLabel
+@onready var timer_label: Label = $MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/TimerLabel
+@onready var timer_bar: ProgressBar = $MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/TimerBar
 @onready var alternative_buttons: Array = [
-	$MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer/AltBtn1,
-	$MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer/AltBtn2,
-	$MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer/AltBtn3,
-	$MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer/AltBtn4,
+	$MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/AlternativesContainer/AltBtn1,
+	$MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/AlternativesContainer/AltBtn2,
+	$MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/AlternativesContainer/AltBtn3,
+	$MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/AlternativesContainer/AltBtn4,
 ]
 @onready var feedback_flash: ColorRect = $FeedbackFlash
 
@@ -68,6 +69,9 @@ func _on_question_asked(question: Dictionary) -> void:
 	_show_question()
 
 	var time_limit: float = difficulty.get_response_time(score_manager.get_score())
+	if timer_bar != null:
+		timer_bar.max_value = time_limit
+		timer_bar.value = time_limit
 	_timer_node.start(time_limit)
 
 
@@ -108,12 +112,16 @@ func _on_combo_changed(_new_combo: int) -> void:
 
 func _update_hud() -> void:
 	if score_label:
-		score_label.text = "Score: %d" % score_manager.get_score()
+		score_label.text = "%d" % score_manager.get_score()
 	if lives_label:
-		lives_label.text = "Vidas: %d" % game_manager.lives
+		lives_label.text = "%d / %d" % [game_manager.lives, GameManager.MAX_LIVES]
+		var low_lives: bool = game_manager.lives <= 1
+		lives_label.add_theme_color_override(
+			"font_color",
+			Color(1.0, 0.38, 0.28, 1.0) if low_lives else Color(0.94, 0.69, 0.35, 1.0)
+		)
 	if combo_label:
-		var combo: int = score_manager.get_combo()
-		combo_label.text = "Combo: x%d" % combo if combo > 1 else "Combo:"
+		combo_label.text = "x%d" % score_manager.get_combo()
 
 
 func _show_question() -> void:
@@ -160,6 +168,8 @@ func _submit_selected() -> void:
 func _process(_delta: float) -> void:
 	if _timer_node != null and not _timer_node.is_stopped():
 		timer_label.text = "Tempo: %.1fs" % _timer_node.time_left
+		if timer_bar != null:
+			timer_bar.value = _timer_node.time_left
 
 
 ## Mostra um flash de cor sobre a tela e o esvanece (issue #37).

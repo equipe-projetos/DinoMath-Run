@@ -1,42 +1,131 @@
-[gd_scene format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui_manager.gd" id="1_ui"]
 
-[sub_resource type="StyleBoxFlat" id="style_normal"]
-bg_color = Color(0.2, 0.6, 1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_panel"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0.09, 0.055, 0.035, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.91, 0.55, 0.22, 0.45)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_question_panel"]
+content_margin_left = 36.0
+content_margin_top = 24.0
+content_margin_right = 36.0
+content_margin_bottom = 24.0
+bg_color = Color(0.07, 0.045, 0.03, 0.96)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.8, 0.8, 0.8, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(0.91, 0.55, 0.22, 0.5)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 22
+shadow_offset = Vector2(0, 10)
 
-[sub_resource type="StyleBoxFlat" id="style_hover"]
-bg_color = Color(0.3, 0.7, 1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alt_normal"]
+content_margin_left = 26.0
+content_margin_top = 12.0
+content_margin_right = 26.0
+content_margin_bottom = 12.0
+bg_color = Color(0.16, 0.1, 0.06, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(0.91, 0.55, 0.22, 0.7)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.28)
+shadow_size = 6
+shadow_offset = Vector2(0, 4)
 
-[sub_resource type="StyleBoxFlat" id="style_pressed"]
-bg_color = Color(0.1, 0.5, 0.8, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alt_hover"]
+content_margin_left = 26.0
+content_margin_top = 12.0
+content_margin_right = 26.0
+content_margin_bottom = 12.0
+bg_color = Color(0.23, 0.14, 0.08, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.71, 0.35, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.32)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alt_pressed"]
+content_margin_left = 26.0
+content_margin_top = 12.0
+content_margin_right = 26.0
+content_margin_bottom = 12.0
+bg_color = Color(0.78, 0.33, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.82, 0.45, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.32)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alt_focus"]
+draw_center = false
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1, 0.84, 0.25, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(1, 0.82, 0.45, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_timer_background"]
+bg_color = Color(0.18, 0.11, 0.06, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_timer_fill"]
+bg_color = Color(0.78, 0.33, 0.15, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [node name="UI" type="CanvasLayer" groups=["ui"]]
 script = ExtResource("1_ui")
@@ -47,76 +136,217 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 20
+theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
+theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="TopBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ScorePanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/TopBar"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
+
+[node name="Content" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopBar/ScorePanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Caption" type="Label" parent="MarginContainer/VBoxContainer/TopBar/ScorePanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.6, 0.8)
+theme_override_font_sizes/font_size = 12
+text = "PONTOS"
+
+[node name="ScoreLabel" type="Label" parent="MarginContainer/VBoxContainer/TopBar/ScorePanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.78, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.08, 0.04, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 26
+text = "0"
+
+[node name="SpacerLeft" type="Control" parent="MarginContainer/VBoxContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ComboPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/TopBar"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
+
+[node name="Content" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopBar/ComboPanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Caption" type="Label" parent="MarginContainer/VBoxContainer/TopBar/ComboPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.6, 0.8)
+theme_override_font_sizes/font_size = 12
+text = "COMBO"
+horizontal_alignment = 1
+
+[node name="ComboLabel" type="Label" parent="MarginContainer/VBoxContainer/TopBar/ComboPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.58, 0.22, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.08, 0.04, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 24
+text = "x0"
+horizontal_alignment = 1
+
+[node name="SpacerRight" type="Control" parent="MarginContainer/VBoxContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LivesPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/TopBar"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
+
+[node name="Content" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopBar/LivesPanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Caption" type="Label" parent="MarginContainer/VBoxContainer/TopBar/LivesPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.6, 0.8)
+theme_override_font_sizes/font_size = 12
+text = "VIDAS"
+horizontal_alignment = 2
+
+[node name="LivesLabel" type="Label" parent="MarginContainer/VBoxContainer/TopBar/LivesPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.69, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.08, 0.04, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 24
+text = "3 / 3"
+horizontal_alignment = 2
+
+[node name="QuestionCenter" type="CenterContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="QuestionContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/QuestionCenter"]
+custom_minimum_size = Vector2(720, 0)
+layout_mode = 2
+visible = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_question_panel")
+
+[node name="QuestionContent" type="VBoxContainer" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer"]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer_Score" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="QuestionTag" type="Label" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.6, 0.85)
+theme_override_font_sizes/font_size = 14
+text = "CONTA RÁPIDA"
+horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_Score"]
-text = "Score: 0"
-
-[node name="HBoxContainer_Lives" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-
-[node name="LivesLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_Lives"]
-text = "Vidas: 3"
-
-[node name="HBoxContainer_Combo" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-
-[node name="ComboLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_Combo"]
-text = ""
-
-[node name="QuestionContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-visible = false
-theme_override_constants/separation = 8
-
-[node name="QuestionLabel" type="Label" parent="MarginContainer/VBoxContainer/QuestionContainer"]
+[node name="QuestionLabel" type="Label" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.08, 0.04, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 44
 text = "Pergunta: ?"
 horizontal_alignment = 1
 
-[node name="TimerLabel" type="Label" parent="MarginContainer/VBoxContainer/QuestionContainer"]
-text = "Tempo: 5.0s"
+[node name="TimerBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_timer_background")
+theme_override_styles/fill = SubResource("StyleBoxFlat_timer_fill")
+value = 100.0
+show_percentage = false
+
+[node name="TimerLabel" type="Label" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.69, 0.35, 1)
+theme_override_font_sizes/font_size = 18
+text = "Tempo: 8.0s"
 horizontal_alignment = 1
 
-[node name="AlternativesContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/QuestionContainer"]
+[node name="AlternativesContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent"]
+layout_mode = 2
+theme_override_constants/separation = 14
 alignment = 1
-theme_override_constants/separation = 12
 
-[node name="AltBtn1" type="Button" parent="MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer"]
-custom_minimum_size = Vector2(64, 48)
+[node name="AltBtn1" type="Button" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/AlternativesContainer"]
+custom_minimum_size = Vector2(124, 60)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_alt_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_alt_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_alt_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_alt_focus")
 toggle_mode = true
-theme_override_styles/normal = SubResource("style_normal")
-theme_override_styles/hover = SubResource("style_hover")
-theme_override_styles/pressed = SubResource("style_pressed")
 text = "1"
 
-[node name="AltBtn2" type="Button" parent="MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer"]
-custom_minimum_size = Vector2(64, 48)
+[node name="AltBtn2" type="Button" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/AlternativesContainer"]
+custom_minimum_size = Vector2(124, 60)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_alt_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_alt_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_alt_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_alt_focus")
 toggle_mode = true
-theme_override_styles/normal = SubResource("style_normal")
-theme_override_styles/hover = SubResource("style_hover")
-theme_override_styles/pressed = SubResource("style_pressed")
 text = "2"
 
-[node name="AltBtn3" type="Button" parent="MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer"]
-custom_minimum_size = Vector2(64, 48)
+[node name="AltBtn3" type="Button" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/AlternativesContainer"]
+custom_minimum_size = Vector2(124, 60)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_alt_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_alt_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_alt_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_alt_focus")
 toggle_mode = true
-theme_override_styles/normal = SubResource("style_normal")
-theme_override_styles/hover = SubResource("style_hover")
-theme_override_styles/pressed = SubResource("style_pressed")
 text = "3"
 
-[node name="AltBtn4" type="Button" parent="MarginContainer/VBoxContainer/QuestionContainer/AlternativesContainer"]
-custom_minimum_size = Vector2(64, 48)
+[node name="AltBtn4" type="Button" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent/AlternativesContainer"]
+custom_minimum_size = Vector2(124, 60)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_alt_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_alt_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_alt_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_alt_focus")
 toggle_mode = true
-theme_override_styles/normal = SubResource("style_normal")
-theme_override_styles/hover = SubResource("style_hover")
-theme_override_styles/pressed = SubResource("style_pressed")
 text = "4"
+
+[node name="HintLabel" type="Label" parent="MarginContainer/VBoxContainer/QuestionCenter/QuestionContainer/QuestionContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.6, 0.75)
+theme_override_font_sizes/font_size = 15
+text = "Setas/WASD selecionam · Enter ou Espaço confirmam"
+horizontal_alignment = 1
+
+[node name="BottomSpacer" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
 
 [node name="FeedbackFlash" type="ColorRect" parent="."]
 anchors_preset = 15
