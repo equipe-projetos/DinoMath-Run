@@ -152,6 +152,7 @@ func lose_life() -> void:
 		return
 
 	_life_loss_cooldown = LIFE_LOSS_COOLDOWN
+	score_manager.reset_combo()
 	lives = maxi(lives - 1, 0)
 	lives_changed.emit(lives)
 

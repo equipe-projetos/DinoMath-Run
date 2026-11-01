@@ -121,7 +121,7 @@ func _update_hud() -> void:
 			Color(1.0, 0.38, 0.28, 1.0) if low_lives else Color(0.94, 0.69, 0.35, 1.0)
 		)
 	if combo_label:
-		combo_label.text = "x%d" % score_manager.get_combo()
+		combo_label.text = "%d" % score_manager.get_combo()
 
 
 func _show_question() -> void:
