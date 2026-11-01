@@ -48,9 +48,9 @@ func submit_answer(answer: Variant) -> void:
 		_on_wrong()
 
 func _on_correct() -> void:
-	score.add_combo_points()
+	var points: int = score.add_combo_points()
 	# O GameManager agenda o salto na distância correta do obstáculo.
-	answer_correct.emit(score.get_combo() > 1, score.get_score())
+	answer_correct.emit(score.get_combo() > 1, points)
 	current_state = State.IDLE
 	cycle_finished.emit()
 

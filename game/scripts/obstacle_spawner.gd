@@ -19,13 +19,13 @@ const DEFAULT_OBSTACLE_SCENE: PackedScene = preload("res://scenes/obstacle.tscn"
 ## Distância à frente do player em que o obstáculo nasce.
 @export var spawn_ahead: float = 30.0
 ## Distância mínima entre obstáculos, medida na velocidade base.
-@export var min_gap: float = 30.0
+@export var min_gap: float = 38.0
 ## Distância máxima entre obstáculos, medida na velocidade base.
-@export var max_gap: float = 40.0
+@export var max_gap: float = 52.0
 ## Velocidade de referência usada para escalar as distâncias.
 @export var base_speed: float = 5.0
 ## Atraso antes do primeiro obstáculo, em segundos.
-@export var initial_delay: float = 1.0
+@export var initial_delay: float = 2.5
 ## Quantidade de obstáculos mantidos no pool.
 @export var pool_size: int = 12
 ## Altura em que o obstáculo é posicionado no mundo.
@@ -65,6 +65,7 @@ var _next_gap: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group("obstacle_spawner")
 	if random_seed != 0:
 		_rng.seed = random_seed
 	else:
@@ -211,6 +212,10 @@ func _get_effective_spawn_ahead() -> float:
 	var closing_speed: float = _get_player_speed() + maxf(obstacle_speed, 0.0)
 	var required: float = (_get_response_time() + maxf(jump_time_margin, 0.0)) * closing_speed
 	return maxf(spawn_ahead, required)
+
+
+func get_spawn_ahead_distance() -> float:
+	return _get_effective_spawn_ahead()
 
 
 ## Integração opcional com o DifficultyManager: 0 = mais espaço, 1 = mais denso.

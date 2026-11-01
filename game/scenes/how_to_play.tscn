@@ -334,12 +334,23 @@ theme_override_font_sizes/font_size = 17
 text = "ENTER"
 horizontal_alignment = 1
 
+[node name="KeySpace" type="PanelContainer" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysConfirm"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_keycap")
+
+[node name="Label" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid/KeysConfirm/KeySpace"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.89, 0.72, 1)
+theme_override_font_sizes/font_size = 17
+text = "ESPAÇO"
+horizontal_alignment = 1
+
 [node name="ConfirmDesc" type="Label" parent="Layout/Content/Columns/ControlsPanel/ControlsContent/ControlsGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.92, 0.86, 0.77, 1)
 theme_override_font_sizes/font_size = 18
-text = "Confirma a resposta"
+text = "Confirmam a resposta"
 vertical_alignment = 1
 autowrap_mode = 2
 

@@ -7,11 +7,9 @@ signal high_score_changed(new_high_score: int)
 
 const POINTS_CORRECT: int = 10
 const POINTS_OBSTACLE: int = 10
-
-const COMBO_TIER_2: int = 3
-const COMBO_TIER_3: int = 5
-const COMBO_TIER_4: int = 8
-const COMBO_TIER_5: int = 12
+const POINTS_TIER_BONUS: int = 5
+const COMBO_BONUS_PER_HIT: int = 2
+const COMBO_BONUS_CAP: int = 10
 
 const HIGH_SCORE_PATH: String = "user://high_score.save"
 
@@ -27,14 +25,15 @@ func _ready() -> void:
 
 func add_points(points: int) -> void:
 	score += points
-	_combo_increment()
 	score_changed.emit(score)
 	_check_high_score()
 
-func add_combo_points() -> void:
-	var multiplier: int = _get_combo_multiplier()
-	var points: int = POINTS_CORRECT * multiplier
+func add_combo_points() -> int:
+	var points: int = _get_correct_base_points()
+	points += mini(combo, COMBO_BONUS_CAP) * COMBO_BONUS_PER_HIT
 	add_points(points)
+	_combo_increment()
+	return points
 
 func add_obstacle_points() -> void:
 	add_points(POINTS_OBSTACLE)
@@ -47,16 +46,16 @@ func _combo_increment() -> void:
 	combo += 1
 	combo_changed.emit(combo)
 
-func _get_combo_multiplier() -> int:
-	if combo >= COMBO_TIER_5:
-		return 10
-	if combo >= COMBO_TIER_4:
-		return 5
-	if combo >= COMBO_TIER_3:
-		return 3
-	if combo >= COMBO_TIER_2:
-		return 2
-	return 1
+func _get_correct_base_points() -> int:
+	if score >= DifficultyManager.SCORE_TIER_MAX:
+		return POINTS_CORRECT + POINTS_TIER_BONUS * 4
+	if score >= DifficultyManager.SCORE_TIER_EXPERT:
+		return POINTS_CORRECT + POINTS_TIER_BONUS * 3
+	if score >= DifficultyManager.SCORE_TIER_HARD:
+		return POINTS_CORRECT + POINTS_TIER_BONUS * 2
+	if score >= DifficultyManager.SCORE_TIER_MEDIUM:
+		return POINTS_CORRECT + POINTS_TIER_BONUS
+	return POINTS_CORRECT
 
 func _check_high_score() -> void:
 	if score > high_score:
