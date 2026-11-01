@@ -33,8 +33,7 @@ const JUMP_LEAD_MARGIN: float = 0.5
 ## O salto automático só começa depois que o mundo retomou parte da velocidade.
 const JUMP_MIN_SPEED_SCALE: float = 0.85
 
-## Evita perder duas vidas pelo mesmo erro (resposta errada seguida da colisão
-## com o obstáculo que gerou a pergunta).
+## Evita perder duas vidas em colisões muito próximas (dois cactos seguidos).
 const LIFE_LOSS_COOLDOWN: float = 3.0
 
 const GAME_SCENE_PATH: String = "res://scenes/Game.tscn"
@@ -144,7 +143,8 @@ func resume_game() -> void:
 	_set_state(State.PLAYING)
 
 
-## Remove uma vida e encerra a partida quando não restar nenhuma.
+## Remove uma vida quando o dinossauro colide com um obstáculo e encerra a
+## partida quando não restar nenhuma.
 func lose_life() -> void:
 	if current_state != State.PLAYING:
 		return
@@ -309,9 +309,13 @@ func _on_answer_correct(_is_combo: bool, _points: int) -> void:
 
 
 func _on_question_failed() -> void:
+	# Errar não causa dano imediato: o dinossauro continua correndo (sem salto
+	# automático) e só perde a vida ao colidir com o cacto. O cooldown é
+	# zerado para que essa colisão sempre conte, mesmo com outro obstáculo
+	# por perto.
 	_jump_pending = false
 	_jump_obstacle = null
-	lose_life()
+	_life_loss_cooldown = 0.0
 
 
 ## Executa o salto automático quando o dinossauro está na distância de

@@ -470,7 +470,7 @@ theme_override_font_sizes/normal_font_size = 17
 theme_override_font_sizes/bold_font_size = 18
 bbcode_enabled = true
 text = "[b][color=#E0603C]Errou ou o tempo acabou[/color][/b]
-Você perde uma vida e a corrida continua."
+O dinossauro bate no cacto, perde uma vida e a corrida continua."
 fit_content = true
 scroll_active = false
 

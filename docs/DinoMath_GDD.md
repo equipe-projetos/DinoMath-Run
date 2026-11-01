@@ -282,7 +282,7 @@ Esses itens são listados na Seção 37 como possíveis expansões futuras, mas 
 13. A dificuldade é reavaliada de acordo com o novo score.
 14. Um novo obstáculo é gerado adiante.
 15. O ciclo se repete indefinidamente.
-16. Em caso de falha (resposta errada, tempo esgotado ou colisão), aplica-se a penalidade correspondente; ao zerar as vidas, ocorre o Game Over.
+16. Em caso de falha (resposta errada ou tempo esgotado), o dinossauro segue sem salto automático e colide com o obstáculo, perdendo 1 vida; ao zerar as vidas, ocorre o Game Over.
 
 ```mermaid
 flowchart TD
@@ -567,7 +567,7 @@ O combo é zerado ao errar uma questão ou colidir com um obstáculo. Por ser um
 
 | Evento | Efeito |
 |---|---|
-| Resposta incorreta ou tempo esgotado | -1 vida, obstáculo pode atingir o personagem |
+| Resposta incorreta ou tempo esgotado | Sem dano imediato: o dinossauro segue sem salto automático e perde 1 vida ao colidir com o obstáculo |
 | Resposta correta | Continua normalmente |
 | Vidas esgotadas | Game Over |
 
@@ -1108,7 +1108,7 @@ Priorização utilizando o método **MoSCoW**:
 | Subtração sem negativo (nível inicial) | `2 - 5 = ?` | Combinação não deve ser gerada em dificuldade baixa |
 | Operador desconhecido | `7 ? 2 = 14` | Resposta correta = "×" |
 | Tempo esgotado | Nenhuma resposta selecionada dentro do tempo | Tratado como resposta incorreta |
-| Vidas zeradas | 3ª resposta incorreta consecutiva | Transição para tela de Game Over |
+| Vidas zeradas | 3ª colisão com obstáculo após respostas incorretas | Transição para tela de Game Over |
 
 ---
 
