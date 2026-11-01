@@ -182,24 +182,32 @@ func _start_shake() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	# Só aceita teclado com uma pergunta ativa e durante a partida: evita
+	# navegação fantasmas nas telas de menu e de fim de jogo.
+	if game_manager.get_state() != GameManager.State.PLAYING:
+		return
 	if not question_manager.is_question_active() or current_alternatives.is_empty():
 		return
 
-	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_UP or event.keycode == KEY_W:
-			selected_index = (selected_index - 1) % current_alternatives.size()
+	# Ignora o eco da tecla segurada: senão a seleção salta várias casas.
+	if event is InputEventKey and event.pressed and not event.echo:
+		var size: int = current_alternatives.size()
+		var handled: bool = true
+
+		if event.keycode == KEY_UP or event.keycode == KEY_W or event.keycode == KEY_LEFT or event.keycode == KEY_A:
+			selected_index = posmod(selected_index - 1, size)
 			_update_alternatives_visual()
-		elif event.keycode == KEY_DOWN or event.keycode == KEY_S:
-			selected_index = (selected_index + 1) % current_alternatives.size()
-			_update_alternatives_visual()
-		elif event.keycode == KEY_LEFT or event.keycode == KEY_A:
-			selected_index = (selected_index - 1) % current_alternatives.size()
-			_update_alternatives_visual()
-		elif event.keycode == KEY_RIGHT or event.keycode == KEY_D:
-			selected_index = (selected_index + 1) % current_alternatives.size()
+		elif event.keycode == KEY_DOWN or event.keycode == KEY_S or event.keycode == KEY_RIGHT or event.keycode == KEY_D:
+			selected_index = posmod(selected_index + 1, size)
 			_update_alternatives_visual()
 		elif event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE:
 			_submit_selected()
+		else:
+			handled = false
+
+		# Evita que o mesmo tecla chegue a outros tratadores durante a resposta.
+		if handled:
+			get_viewport().set_input_as_handled()
 
 
 func get_lives() -> int:
