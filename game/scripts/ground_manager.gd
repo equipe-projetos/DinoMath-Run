@@ -14,9 +14,9 @@ const DEFAULT_SEGMENT_SCENE: PackedScene = preload("res://scenes/ground_segment.
 
 @export_group("Segmentos")
 ## Quantidade inicial de módulos ativos.
-@export var segment_count: int = 4
+@export var segment_count: int = 8
 ## Limite de módulos caso a velocidade exija mais cobertura à frente.
-@export var max_segment_count: int = 8
+@export var max_segment_count: int = 16
 ## Comprimento de cada módulo. Zero calcula automaticamente pela colisão.
 @export var segment_length: float = 0.0
 ## Distância atrás do player onde o primeiro módulo começa.
@@ -30,12 +30,15 @@ const DEFAULT_SEGMENT_SCENE: PackedScene = preload("res://scenes/ground_segment.
 ## Cobertura mínima à frente, independente da velocidade.
 @export var min_lookahead_distance: float = 24.0
 ## Velocidade usada quando nem o player nem o DifficultyManager estão disponíveis.
-@export var fallback_speed: float = 5.0
+@export var fallback_speed: float = 3.0
+## Folga de chão além do ponto onde o próximo obstáculo nasce.
+@export var spawn_ahead_margin: float = 8.0
 
 var _segments: Array[Node3D] = []
 var _player: Node3D
 var _difficulty: Node
 var _score: Node
+var _obstacle_spawner: Node
 var _length: float = 0.0
 var _far_edge: float = 0.0
 var _initialized: bool = false
@@ -48,6 +51,7 @@ func _ready() -> void:
 	_player = player if is_instance_valid(player) else get_tree().get_first_node_in_group("player")
 	_difficulty = get_node_or_null("/root/DifficultyManager")
 	_score = get_node_or_null("/root/ScoreManager")
+	_ensure_obstacle_spawner()
 
 	if not is_instance_valid(_player):
 		push_warning("GroundManager: nenhum player encontrado; cenário desativado.")
@@ -138,13 +142,32 @@ func _far_edge_of(segment: Node3D) -> float:
 
 
 func _desired_segment_count() -> int:
-	var lookahead: float = maxf(min_lookahead_distance, lookahead_seconds * get_scroll_speed())
+	var speed_lookahead: float = lookahead_seconds * get_scroll_speed()
+	var spawn_lookahead: float = _get_obstacle_spawn_ahead() + maxf(spawn_ahead_margin, 0.0)
+	var lookahead: float = maxf(min_lookahead_distance, maxf(speed_lookahead, spawn_lookahead))
 	# A cobertura à frente é mínima imediatamente antes de reciclar um módulo,
 	# quando ainda restam (N - 1) módulos menos a margem atrás do player.
 	var required: int = ceili((lookahead + maxf(recycle_margin, 0.0)) / _length) + 1
 	var minimum: int = maxi(segment_count, 1)
 	var maximum: int = maxi(max_segment_count, minimum)
 	return clampi(maxi(minimum, required), minimum, maximum)
+
+
+func _get_obstacle_spawn_ahead() -> float:
+	if not is_instance_valid(_obstacle_spawner):
+		_ensure_obstacle_spawner()
+	if not is_instance_valid(_obstacle_spawner):
+		return 0.0
+	if not _obstacle_spawner.has_method("get_spawn_ahead_distance"):
+		return 0.0
+	return maxf(float(_obstacle_spawner.call("get_spawn_ahead_distance")), 0.0)
+
+
+func _ensure_obstacle_spawner() -> bool:
+	if is_instance_valid(_obstacle_spawner):
+		return true
+	_obstacle_spawner = get_tree().get_first_node_in_group("obstacle_spawner")
+	return is_instance_valid(_obstacle_spawner)
 
 
 ## Lê o comprimento do módulo a partir da caixa de colisão da cena.

@@ -65,6 +65,7 @@ var _next_gap: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group("obstacle_spawner")
 	if random_seed != 0:
 		_rng.seed = random_seed
 	else:
@@ -211,6 +212,10 @@ func _get_effective_spawn_ahead() -> float:
 	var closing_speed: float = _get_player_speed() + maxf(obstacle_speed, 0.0)
 	var required: float = (_get_response_time() + maxf(jump_time_margin, 0.0)) * closing_speed
 	return maxf(spawn_ahead, required)
+
+
+func get_spawn_ahead_distance() -> float:
+	return _get_effective_spawn_ahead()
 
 
 ## Integração opcional com o DifficultyManager: 0 = mais espaço, 1 = mais denso.
