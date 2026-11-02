@@ -105,10 +105,17 @@ func _physics_process(_delta: float) -> void:
 		_triggered_obstacle = obstacle
 		_target_speed_scale = SLOW_MOTION_SCALE
 		question_manager.start_question()
+		# Chegou o momento do cálculo: abaixa a trilha durante a pergunta.
+		Music.duck()
 
 
 func start_game() -> void:
 	get_tree().paused = false
+
+	# Retoma a trilha após uma derrota (reinício). Se ela já estiver
+	# tocando (menu -> partida), apenas mantém sem reiniciar.
+	Music.play_music()
+
 	score_manager.reset_score()
 	difficulty.set_score(0)
 	lives = MAX_LIVES
@@ -164,6 +171,9 @@ func lose_life() -> void:
 func request_game_over() -> void:
 	if current_state == State.GAME_OVER:
 		return
+
+	# Na derrota a trilha para; ela volta ao reiniciar ou no menu.
+	Music.stop_music()
 
 	question_manager.cancel_question()
 	world_speed_scale = 1.0
@@ -349,6 +359,8 @@ func _update_pending_jump() -> void:
 
 func _on_question_cycle_finished() -> void:
 	_target_speed_scale = 1.0
+	# Resposta dada (acerto, erro ou tempo esgotado): trilha volta ao normal.
+	Music.unduck()
 
 
 func _on_player_hit() -> void:

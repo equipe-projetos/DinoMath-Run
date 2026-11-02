@@ -27,6 +27,10 @@ func _ready() -> void:
 	get_tree().paused = false
 	Engine.time_scale = 1.0
 
+	# Retoma a trilha se o jogador voltou ao menu depois de uma derrota.
+	# Se já estiver tocando (menu -> Como Jogar -> menu), não reinicia.
+	Music.play_music()
+
 	play_button.pressed.connect(_on_play_pressed)
 	how_to_play_button.pressed.connect(_on_how_to_play_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
