@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://d3et6i6ifj43r"]
+[gd_scene load_steps=13 format=3 uid="uid://d3et6i6ifj43r"]
 
 [ext_resource type="PackedScene" uid="uid://dx7ocd4wefrac" path="res://scenes/Player.tscn" id="1_ibkli"]
 [ext_resource type="PackedScene" path="res://scenes/ui.tscn" id="2_ui_hud"]
@@ -31,6 +31,17 @@ fog_enabled = true
 fog_light_color = Color(0.909804, 0.827451, 0.678431, 1)
 fog_density = 0.006
 fog_sky_affect = 0.15
+
+[sub_resource type="Gradient" id="Gradient_horizon_mist"]
+offsets = PackedFloat32Array(0, 0.38, 0.62, 1)
+colors = PackedColorArray(0.909804, 0.827451, 0.678431, 0, 0.909804, 0.827451, 0.678431, 0.42, 0.909804, 0.827451, 0.678431, 0.42, 0.909804, 0.827451, 0.678431, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_horizon_mist"]
+gradient = SubResource("Gradient_horizon_mist")
+width = 16
+height = 512
+fill_from = Vector2(0, 0.3)
+fill_to = Vector2(0, 0.55)
 
 [node name="Game" type="Node3D" unique_id=1893505870]
 
@@ -65,3 +76,17 @@ script = ExtResource("5_scenery")
 
 [node name="ParallaxBackdrop" type="Node3D" parent="."]
 script = ExtResource("6_parallax")
+
+[node name="HorizonMist" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Mist" type="TextureRect" parent="HorizonMist"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_horizon_mist")
+expand_mode = 1
+stretch_mode = 0
