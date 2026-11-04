@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://ddmn5nxin5ce" path="res://scripts/obstacle_spawner.gd" id="3_spawner"]
 [ext_resource type="Script" uid="uid://dnm3y44gti5t1" path="res://scripts/ground_manager.gd" id="4_ground"]
 [ext_resource type="Script" uid="uid://b0ub3whk0fai" path="res://scripts/scenery_manager.gd" id="5_scenery"]
-[ext_resource type="Script" path="res://scripts/parallax_backdrop.gd" id="6_parallax"]
+[ext_resource type="Script" uid="uid://cbv82dq6s7dhb" path="res://scripts/parallax_backdrop.gd" id="6_parallax"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_desert"]
 sky_top_color = Color(0.243137, 0.490196, 0.784314, 1)
