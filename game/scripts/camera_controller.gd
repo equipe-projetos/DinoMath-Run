@@ -2,10 +2,15 @@ class_name CameraController
 extends Camera3D
 
 ## Câmera lateral com acompanhamento suave do movimento vertical do player.
+##
+## A altura e o alvo de mira sobem juntos (2.4/0.8 -> 3.0/1.4) mantendo o
+## mesmo ângulo de visão: a câmera sobe meio metro e o enquadramento desce
+## junto, colocando o dino e os cactos mais abaixo na tela e afastando
+## ambos da borda superior do chão.
 
 @export var target: Node3D
-@export var offset: Vector3 = Vector3(5.0, 2.4, 1.8)
-@export var look_offset: Vector3 = Vector3(0.0, 0.8, -1.5)
+@export var offset: Vector3 = Vector3(5.0, 3.0, 1.8)
+@export var look_offset: Vector3 = Vector3(0.0, 1.4, -1.5)
 @export_range(0.0, 1.0, 0.05) var vertical_follow: float = 0.5
 @export var vertical_smoothing: float = 5.0
 
