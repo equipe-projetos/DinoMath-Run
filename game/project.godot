@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Music="*res://scripts/music.gd"
 DifficultyManager="res://scripts/difficulty_manager.gd"
 ScoreManager="res://scripts/score_manager.gd"
 QuestionManager="res://scripts/question_manager.gd"

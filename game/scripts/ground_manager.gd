@@ -24,6 +24,12 @@ const DEFAULT_SEGMENT_SCENE: PackedScene = preload("res://scenes/ground_segment.
 ## Distância de chão que permanece atrás do player antes de reciclar o módulo.
 @export var recycle_margin: float = 12.0
 
+## Sobreposição visual entre módulos consecutivos, em unidades do mundo.
+## As bordas do mesh de chão são irregulares (rasgadas) e não se encontram
+## exatamente na linha de costura, deixando uma fresta escura visível entre
+## os blocos. A sobreposição faz as superfícies se cruzarem e fecha a fresta.
+const SEGMENT_OVERLAP: float = 0.15
+
 @export_group("Velocidade")
 ## Segundos de cenário que devem existir à frente do player.
 @export var lookahead_seconds: float = 4.0
@@ -85,6 +91,10 @@ func _initialize() -> void:
 		push_error("GroundManager: não foi possível determinar o comprimento do módulo.")
 		set_physics_process(false)
 		return
+
+	# Espaça os módulos um pouco menos que o comprimento real para que as
+	# bordas irregulares dos meshes se sobreponham e não fique a fresta.
+	_length = maxf(_length - SEGMENT_OVERLAP, 0.5)
 
 	_far_edge = _player.global_position.z + maxf(start_behind, 0.0)
 	var desired: int = _desired_segment_count()

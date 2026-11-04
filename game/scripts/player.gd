@@ -19,12 +19,12 @@ const WALK_STRIDE_LENGTH: float = 1.5
 ## Ajuste fino sobre a sincronização automática entre passada e velocidade.
 @export var run_animation_speed: float = 1.0
 ## Limite de playback para manter a caminhada legível em velocidade de corrida.
-@export var max_animation_speed: float = 2.5
+@export var max_animation_speed: float = 4.0
 ## Velocidade mínima da animação durante o slow motion (nunca congela).
 @export var min_animation_speed: float = 0.2
 
 @export_group("Movimento")
-@export var run_speed: float = 3.0
+@export var run_speed: float = 4.0
 @export var jump_velocity: float = 7.0
 ## Tempo parado após uma colisão, mesmo quando o modelo não tem animação de dano.
 @export var hit_recovery_time: float = 0.6

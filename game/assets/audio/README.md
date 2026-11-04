@@ -9,3 +9,6 @@ https://mixkit.co/free-sound-effects/click/
 
 https://pixabay.com/sound-effects/film-special-effects-dinosaur-5-86564/
 - hit -> `hit.wav`
+
+https://pixabay.com/music/upbeat-retro-arcade-game-music-297305/
+- music_game -> `mfcc-retro-arcade-game-music-297305.mp3`

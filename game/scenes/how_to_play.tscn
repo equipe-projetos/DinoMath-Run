@@ -409,7 +409,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.92, 0.86, 0.77, 1)
 theme_override_font_sizes/font_size = 18
-text = "Volta ao menu"
+text = "Pausa o jogo · volta ao menu"
 vertical_alignment = 1
 autowrap_mode = 2
 
@@ -481,7 +481,7 @@ theme_override_font_sizes/normal_font_size = 17
 theme_override_font_sizes/bold_font_size = 18
 bbcode_enabled = true
 text = "[b][color=#E0603C]Errou ou o tempo acabou[/color][/b]
-Você perde uma vida e a corrida continua."
+O dinossauro bate no cacto, perde uma vida e a corrida continua."
 fit_content = true
 scroll_active = false
 
