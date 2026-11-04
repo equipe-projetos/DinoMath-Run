@@ -11,6 +11,8 @@ const HIGH_SCORE_SECTION: String = "score"
 const HIGH_SCORE_KEY: String = "high_score"
 
 const SOUND_GAME_OVER: AudioStream = preload("res://assets/audio/game_over.wav")
+## Mantém o som de derrota no mesmo nível dos demais efeitos.
+const SOUND_VOLUME_DB: float = -6.0
 
 ## Pontuação recebida ao final da partida. Pode ser definida pelo editor ou
 ## pelo GameManager através de `setup()`.
@@ -37,6 +39,7 @@ func _ready() -> void:
 	play_again_button.grab_focus()
 
 	game_over_sound.stream = SOUND_GAME_OVER
+	game_over_sound.volume_db = SOUND_VOLUME_DB
 	game_over_sound.play()
 
 
