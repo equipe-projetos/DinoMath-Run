@@ -24,6 +24,12 @@ const DEFAULT_SEGMENT_SCENE: PackedScene = preload("res://scenes/ground_segment.
 ## Distância de chão que permanece atrás do player antes de reciclar o módulo.
 @export var recycle_margin: float = 12.0
 
+## Escala lateral dos módulos de chão. Com a largura original (12 m) a
+## borda do deserto passava raspando a cabeça do dino, deixando-o "pendurado"
+## no limite do chão. Com 2.5 o deserto tem ~30 m e a borda fica bem acima
+## do enquadramento, sem criar frestas de céu além dela.
+@export var lateral_scale: float = 2.5
+
 ## Sobreposição visual entre módulos consecutivos, em unidades do mundo.
 ## As bordas do mesh de chão são irregulares (rasgadas) e não se encontram
 ## exatamente na linha de costura, deixando uma fresta escura visível entre
@@ -134,6 +140,9 @@ func _add_segment() -> bool:
 		push_error("GroundManager: a cena de chão não é um Node3D.")
 		return false
 
+	# Alarga o deserto apenas no eixo X: a reciclagem usa só o comprimento
+	# em Z, então a escala não interfere na cobertura nem nas frestas.
+	segment.scale = Vector3(maxf(lateral_scale, 1.0), 1.0, 1.0)
 	add_child(segment)
 	_segments.append(segment)
 	_move_to_front(segment)
