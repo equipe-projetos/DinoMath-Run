@@ -19,9 +19,9 @@ const DEFAULT_OBSTACLE_SCENE: PackedScene = preload("res://scenes/obstacle.tscn"
 ## Distância à frente do player em que o obstáculo nasce.
 @export var spawn_ahead: float = 30.0
 ## Distância mínima entre obstáculos, medida na velocidade base.
-@export var min_gap: float = 38.0
+@export var min_gap: float = 24.0
 ## Distância máxima entre obstáculos, medida na velocidade base.
-@export var max_gap: float = 52.0
+@export var max_gap: float = 32.0
 ## Velocidade de referência usada para escalar as distâncias.
 @export var base_speed: float = 5.0
 ## Atraso antes do primeiro obstáculo, em segundos.
@@ -193,14 +193,14 @@ func _choose_gap() -> float:
 	return clampf(_rng.randf_range(target - jitter, target + jitter), gap_min, gap_max)
 
 
-## Faixa efetiva de distâncias. Cresce com a velocidade e nunca fica abaixo do
-## tempo necessário para responder à pergunta e concluir o salto.
+## Faixa efetiva de distâncias. Cresce com a velocidade e reserva o espaço
+## percorrido durante a resposta e o salto, sem espaçar demais os cactos.
 func _get_gap_range() -> Vector2:
 	var speed: float = _get_player_speed()
 	var speed_ratio: float = speed / maxf(base_speed, 0.001)
 	var gap_min: float = minf(min_gap, max_gap) * speed_ratio
 	var gap_max: float = maxf(min_gap, max_gap) * speed_ratio
-	var required: float = (_get_response_time() + maxf(jump_time_margin, 0.0)) * speed
+	var required: float = _get_fair_play_distance(speed)
 
 	gap_min = maxf(gap_min, required)
 	gap_max = maxf(gap_max, gap_min)
@@ -210,8 +210,18 @@ func _get_gap_range() -> Vector2:
 ## Distância à frente do player suficiente para o obstáculo ser percebido.
 func _get_effective_spawn_ahead() -> float:
 	var closing_speed: float = _get_player_speed() + maxf(obstacle_speed, 0.0)
-	var required: float = (_get_response_time() + maxf(jump_time_margin, 0.0)) * closing_speed
-	return maxf(spawn_ahead, required)
+	return maxf(spawn_ahead, _get_fair_play_distance(closing_speed))
+
+
+## Durante a pergunta o mundo anda em slow motion, não em velocidade cheia.
+## Reservar response_time * speed como antes criava um intervalo de 11 s
+## entre cactos no início, mesmo quando o jogador respondia imediatamente.
+func _get_fair_play_distance(speed: float) -> float:
+	var response_distance: float = (
+		_get_response_time() * speed * GameManager.SLOW_MOTION_SCALE
+	)
+	var jump_distance: float = maxf(jump_time_margin, 0.0) * speed
+	return response_distance + jump_distance
 
 
 func get_spawn_ahead_distance() -> float:
