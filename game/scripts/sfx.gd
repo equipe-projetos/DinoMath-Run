@@ -11,6 +11,10 @@ const CORRECT: AudioStream = preload("res://assets/audio/correct.wav")
 const WRONG: AudioStream = preload("res://assets/audio/wrong.wav")
 const HIT: AudioStream = preload("res://assets/audio/hit.mp3")
 
+## Redução global dos efeitos para não cobrirem a trilha nem estourarem
+## nos feedbacks de resposta. Os ajustes individuais abaixo são preservados.
+const VOLUME_OFFSET_DB: float = -6.0
+
 
 static func play_click(tree: SceneTree) -> void:
 	play(tree, CLICK)
@@ -38,7 +42,7 @@ static func play(tree: SceneTree, stream: AudioStream, volume_db: float = 0.0) -
 
 	var player := AudioStreamPlayer.new()
 	player.stream = stream
-	player.volume_db = volume_db
+	player.volume_db = volume_db + VOLUME_OFFSET_DB
 	player.process_mode = Node.PROCESS_MODE_ALWAYS
 	tree.root.add_child(player)
 
