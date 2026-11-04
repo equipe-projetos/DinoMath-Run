@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui_manager.gd" id="1_ui"]
+[ext_resource type="Script" path="res://scripts/pause_menu.gd" id="2_pause"]
 
 [sub_resource type="StyleBoxFlat" id="HUDPanel"]
 content_margin_left = 16.0
@@ -248,6 +249,22 @@ size_flags_vertical = 4
 mouse_filter = 2
 theme_override_styles/panel = SubResource("LifeFull")
 
+[node name="PauseButton" type="Button" parent="TopBar/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(92, 44)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 0.92)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.87, 0.75, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("AltNormal")
+theme_override_styles/hover = SubResource("AltHover")
+theme_override_styles/pressed = SubResource("AltSelected")
+theme_override_styles/focus = SubResource("AltFocus")
+text = "PAUSA"
+
 [node name="QuestionArea" type="Control" parent="."]
 anchors_preset = 12
 anchor_top = 1.0
@@ -401,3 +418,109 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
+
+[node name="PauseLayer" type="Control" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_pause")
+
+[node name="Dim" type="ColorRect" parent="PauseLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.04, 0.025, 0.015, 0.62)
+
+[node name="Center" type="CenterContainer" parent="PauseLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PausePanel" type="PanelContainer" parent="PauseLayer/Center"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("QuestionPanel")
+
+[node name="PauseBox" type="VBoxContainer" parent="PauseLayer/Center/PausePanel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="Title" type="Label" parent="PauseLayer/Center/PausePanel/PauseBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.58, 0.22, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.08, 0.04, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 40
+text = "PAUSA"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="PauseLayer/Center/PausePanel/PauseBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.6, 0.85)
+theme_override_font_sizes/font_size = 16
+text = "Pressione Esc para continuar"
+horizontal_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="PauseLayer/Center/PausePanel/PauseBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ResumeButton" type="Button" parent="PauseLayer/Center/PausePanel/PauseBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 52)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.87, 0.75, 1)
+theme_override_colors/font_focus_color = Color(1, 0.95, 0.86, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("AltNormal")
+theme_override_styles/hover = SubResource("AltHover")
+theme_override_styles/pressed = SubResource("AltSelected")
+theme_override_styles/focus = SubResource("AltFocus")
+text = "Continuar"
+
+[node name="RestartButton" type="Button" parent="PauseLayer/Center/PausePanel/PauseBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 52)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.87, 0.75, 1)
+theme_override_colors/font_focus_color = Color(1, 0.95, 0.86, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("AltNormal")
+theme_override_styles/hover = SubResource("AltHover")
+theme_override_styles/pressed = SubResource("AltSelected")
+theme_override_styles/focus = SubResource("AltFocus")
+text = "Reiniciar"
+
+[node name="MenuButton" type="Button" parent="PauseLayer/Center/PausePanel/PauseBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 52)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.87, 0.75, 1)
+theme_override_colors/font_focus_color = Color(1, 0.95, 0.86, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("AltNormal")
+theme_override_styles/hover = SubResource("AltHover")
+theme_override_styles/pressed = SubResource("AltSelected")
+theme_override_styles/focus = SubResource("AltFocus")
+text = "Menu"

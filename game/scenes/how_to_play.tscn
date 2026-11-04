@@ -409,7 +409,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.92, 0.86, 0.77, 1)
 theme_override_font_sizes/font_size = 18
-text = "Volta ao menu"
+text = "Pausa o jogo · volta ao menu"
 vertical_alignment = 1
 autowrap_mode = 2
 
